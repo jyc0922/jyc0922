@@ -27,16 +27,78 @@
                 <legend>개인 정보 로그인</legend>
                 <ul>
                     <li>
-                        <label for="name">이름</label>
+                        <label for="name">이름:</label>
                         <input type="text" id="name" name="name" placeholder="이름을 입력해주세요" />
                     </li>
                     <li>
-                        <label for="email">메일주소</label>
+                        <label for="email">메일주소:</label>
                         <input type="text" id="email" name="email" placeholder="이메일을 입력해주세요" />
                     </li>
+                    <li>
+                        <label for="age">나이:</label>
+                        <input type="number" id="age" name="age" min="0" max="200" placeholder="나이"/>
+                    </li>
+                    <li>
+                        <label for="subscribe">뉴스 구독:</label>
+                        <input type="checkbox" name="subscribe" />
+                        <label for="subscribe">뉴스레터 구독:</label>
+                        <input type="checkbox" name="subscribe" />
+                    </li>
+                    <li>
+                        <label><input type="radio" name="gender"/>성인남자</label>
+                        <label><input type="radio" name="gender"/>성인여자</label>
+                        <label><input type="radio" name="gender"/>어린이</label>
+                        <label><input type="radio" name="gender"/>노인</label>                        
+                    </li>
+                    <li>
+                        <input type="file" name="file" />
+                    </li>
+                    <li>
+                        <input type="date" value="date"/>
+                    </li>
+                    <li>
+                        <input type="range" name="range" min="0" max="100"/>
+                    </li>
+                    <li>
+                        <input type="color" name="color" />
+                    </li>
+                    <li>
+                        <label for="country">가고 싶은 국가를 선택해주세요.</Select></label>
+                        <select name="country" id="country">
+                            <option value="korea">대한민국</option>
+                            <option value="usa">미국</option>
+                            <option value="china">중국</option>
+                            <option value="japan">일본</option>
+                        </select>
+                    </li>
+                    <li>
+                        <label for="message">메시지:</label>
+                        <textarea id="message" name="message" rows="6" cols="30" placeholder="메시지를 입력해주세요."></textarea>
+                    </li>
+                    <li>
+                        <button type="submit">제출</button>
+                    </li>
+                       
                 </ul>
             </fieldset>
         </form>
+
+        <fomr action="" method="get">
+            <fieldset>
+                <legend>Contact</legend>
+                <ul>
+                        <label for="name">Name:</label>
+                        <input type="text" id="name" name="name" placeholder="" />
+                        <br />
+                        <label for="email">E-mail:</label>
+                        <input type="text" id="email" name="email" placeholder="" />
+                        <br />
+                        <label for="message">Message:</label>
+                        <textarea id="message" name="message" rows="6" cols="30" placeholder=""></textarea>
+                        <br />
+                        <button type="submit">Send Your Message</button>
+                </ul>
+            </fieldset>
 
         
     </body>
