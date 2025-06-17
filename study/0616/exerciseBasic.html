@@ -58,8 +58,9 @@
             <br /><br />
             <label for="country">피자선택:</label>
             <select name="country">
+                <option value="default" selected>피자 종류</option>
                 <option value="pepperoni">페퍼로니</option>
-                <option value="vegetarian" selected>베지테리언</option>
+                <option value="vegetarian">베지테리언</option>
                 <option value="seafood">씨푸드</option>
                 <option value="hawaiian">하와이안</option>
             </select>
@@ -68,34 +69,22 @@
         <form action="" method="">
             <fieldset>
                 <legend>피자 사이즈</legend>
-                <label><input type="radio" name="size"/>Small</label> <br />
+                <label><input type="radio" name="size" checked/>Small</label> <br />
                 <label><input type="radio" name="size"/>Medium</label><br />
-                <label><input type="radio" name="size" checked />Large</label>                
+                <label><input type="radio" name="size"/>Large</label>                
             </fieldset>
         </form>
 
         <form action="" method="">
             <fieldset>
                 <legend>토핑 선택</legend>
-                <li>
-                    <label for="topping">베이컨</label>
-                    <input type="checkbox" name="topping" value="bacon" />
+                    <label for="topping"><input type="checkbox" name="topping" value="bacon" /> 베이컨</label>
                     <br />
-                </li>
-                <li>
-                    <label for="topping">치즈</label>
-                    <input type="checkbox" name="topping" value="cheese" />   
+                    <label for="topping"><input type="checkbox" name="topping" value="cheese" /> 치즈</label>  
                     <br />
-                </li>
-                <li>
-                    <label for="topping">양파</label>
-                    <input type="checkbox" name="topping" value="onion" />
+                    <label for="topping"><input type="checkbox" name="topping" value="onion" /> 양파</label>
                     <br />
-                </li>
-                <li>
-                    <label for="topping">버섯</label>
-                    <input type="checkbox" name="topping" value="mushroom" />
-                </li>                
+                    <label for="topping"><input type="checkbox" name="topping" value="mushroom" /> 버섯</label>
             </fieldset>
         </form>
         
