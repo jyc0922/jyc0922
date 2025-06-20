@@ -6,16 +6,18 @@
     <title>삼국지 인간학</title>
     <style>
         body {
+            display: grid;
             background: url(https://i.pinimg.com/736x/c8/1e/35/c81e357bd8a4004f19c8493c60ff529a.jpg);
             background-size:cover;
             margin: 0;
             grid-template-columns: 25% 1fr;
-            grid-template-rows: 80px 1fr 60px;
+            grid-template-rows: 80px auto 1fr 60px;
             grid-template-areas: 
                 "header header"
+                "nav nav"
                 "sidebar content"
                 "footer footer";    
-            gap: 20px;            
+            gap:initial;            
         }
 
         header, footer {
@@ -25,22 +27,36 @@
             text-align: center;
             font-size: 32px;
             grid-area: header;
+            line-height: 80px;
         }
         footer {
+            grid-area: footer;
             font-size: 16px;
             text-align: center;
         }
 
         nav {
             background-color: #ffff0020;
+            margin: 0 auto 0;
+            max-width: 100%;
+            width: 100%;
         }
 
-        main {
-            background-color: #ffff0020;
+        sidebar {
+            grid-area: sidebar;
+            background-color: yellowgreen;
+            padding: 10px;
+        }
+        content {
+            grid-area: content;
+            display: grid;
+            grid-template-columns: 40% 40%;
+            gap: 10px;
+            background-color: yellowgreen;
+            padding: 20px;
         }
 
         article {
-            width: 40%;
             background-color: #ffff0020;
             border: 2px solid lightcyan;
             box-shadow: 2px 2px 5px grey;
@@ -50,31 +66,26 @@
 
                 
         table {
-                width: 90%;
                 margin: 10px auto 10px;
                 border-collapse: collapse;
         }
-
         th,td {
                 padding: 10px;
                 border: 1px solid goldenrod;
                 text-align: center;
         }
-
         th {
                 background-color:bisque;
         }
-
         tr:nth-child(even){
                 background-color:lightyellow;
         }
-
         tr:nth-child(odd){
                 background-color:lightgoldenrodyellow;
         }
         
         .box{
-                width: 95%;
+                /* width: 95%; */
                 background-color: gold;
                 box-shadow: 2px 2px 2px 2px darkgrey;
                 margin: auto;
@@ -126,59 +137,56 @@
                 margin-top: -5px;
         }
 
-    </style>    
-
+    </style>   
 </head>
+
 <body>
+    <header>삼국지 인간학에 오신것을 환영합니다</header>
+    <nav class="tab-container">
+        <input type="radio" id="tab1" name="tab" checked />
+        <label for="tab1">인물론</label>            
 
-    <header>삼국지 인간학에 오신것을 환영합니다
-        <nav class="tab-container">
-            <input type="radio" id="tab1" name="tab" checked />
-            <label for="tab1">인물론</label>            
+        <input type="radio" id="tab2" name="tab" checked />
+        <label for="tab2">삼국지와연의</label>
 
-            <input type="radio" id="tab2" name="tab" checked />
-            <label for="tab2">삼국지와연의</label>
+        <input type="radio" id="tab3" name="tab" checked />
+        <label for="tab3">관도대전</label>
 
-            <input type="radio" id="tab3" name="tab" checked />
-            <label for="tab3">관도대전</label>
+        <input type="radio" id="tab4" name="tab" checked />
+        <label for="tab4">적벽대전</label>
 
-            <input type="radio" id="tab4" name="tab" checked />
-            <label for="tab4">적벽대전</label>
+        <input type="radio" id="tab5" name="tab" checked />
+        <label for="tab5">이릉대전</label>
 
-            <input type="radio" id="tab5" name="tab" checked />
-            <label for="tab5">이릉대전</label>
+        <div class="content" id="content1">
+        <h4>인물론</h4>
+        <p>누가 영웅인가?</p>
+        </div>
 
-            <div class="content" id="content1">
-            <h4>인물론</h4>
-            <p>누가 영웅인가?</p>
-            </div>
+        <div class="content" id="content2">
+        <h4>삼국지와 연의</h4>
+        <p>삼국지 정사란 무엇이고, 삼국지 연의는 어떠한가?</p>
+        </div>
 
-            <div class="content" id="content2">
-            <h4>삼국지와 연의</h4>
-            <p>삼국지 정사란 무엇이고, 삼국지 연의는 어떠한가?</p>
-            </div>
+        <div class="content" id="content3">
+        <h4>관도대전</h4>
+        <p>조조의 북방통일</p>
+        </div>
 
-            <div class="content" id="content3">
-            <h4>관도대전</h4>
-            <p>조조의 북방통일</p>
-            </div>
+        <div class="content" id="content4">
+        <h4>적벽대전</h4>
+        <p>천하삼분지계를 만들어 낸 결정적 전투</p>
+        </div>
 
-            <div class="content" id="content4">
-            <h4>적벽대전</h4>
-            <p>천하삼분지계를 만들어 낸 결정적 전투</p>
-            </div>
-
-            <div class="content" id="content5">
-            <h4>이릉대전</h4>
-            <p>촉나라가 다시 몰락하게 되는 시점</p>
-            </div>
-
-        </nav>
-    </header> 
-        
-    <main>
+        <div class="content" id="content5">
+        <h4>이릉대전</h4>
+        <p>촉나라가 다시 몰락하게 되는 시점</p>
+        </div>
+    </nav>
+             
         <!-- 창천이사 -->
-        <article>
+    <sidebar>
+        <!-- <article> -->
             <h3><span style="color: blue;">蒼天</span>以死，<span style="color: gold;">黃天</span>當立，勢在甲子，天下大吉</h3>
                 <div class="box" style="text-align: left;">
                 <h2 style="text-align: center; color: grey;">후한의 멸망</h2>                
@@ -191,10 +199,12 @@
                 <span style="color: blue;">亂世</span>의<span style="color: red;">奸雄;</span></li>
             </ol>
                 </div>
-        </article>
+        <!-- </article> -->
+    </sidebar>
         
         <!-- 동한 14명 황제 즉위/사망연도 -->
-        <article>              
+    <content>
+        <div>              
             <table>
             <caption>동한 14명 황제 즉위 및 사망 연도</caption>
             <tr>
@@ -303,10 +313,9 @@
             <td>54세 사망</td>
             </tr>
             </table>
-        </article>
-        
+        </div>        
         <!-- 삼국지 정통론 -->
-        <article>
+        <div>
             <table>
             <caption>삼국지 정통론</caption>
             <tr>
@@ -409,9 +418,8 @@
             <td>1320</td>
             </tr>
             </table>
-        </article>
-
-        </main>    
+        </div>
+    </content>
 
     <footer>저작권&copy;2025 김우성 /
             <a> <span style="font-weight: bolder;">검색 엔진:</span></a>
