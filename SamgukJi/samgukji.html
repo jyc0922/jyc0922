@@ -1,20 +1,48 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>삼국지</title>
+    <title>삼국지 인간학</title>
     <style>
-        .content {
-                /* display: flex;
-                padding: 20px;
-                border-radius: 0 18px 18px 18px;
-                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-                margin-top: -5px; */
+
+        body {
+            background: url(https://i.pinimg.com/736x/c8/1e/35/c81e357bd8a4004f19c8493c60ff529a.jpg);
+            background-size:cover;
         }
-        
+
+        header, footer {
+            background-color: #ffff0080;       
+        }
+        header {
+            text-align: center;
+            font-size: 32px;
+        }
+        footer {
+            font-size: 16px;
+            text-align: center;
+        }
+
+        nav {
+            background-color: #ffff0030;
+        }
+
+        main {
+            background-color: #ffff00b0;
+        }
+
+        article {
+            width: 40%;
+            background-color: #ffff0080;
+            border: 2px solid lightcyan;
+            box-shadow: 2px 2px 5px grey;
+            padding: 10px;
+            text-align: center;
+        }
+
+                
         table {
-                width: 50%;
+                width: 90%;
                 margin: 10px auto 10px;
                 border-collapse: collapse;
         }
@@ -36,272 +64,354 @@
         tr:nth-child(odd){
                 background-color:lightgoldenrodyellow;
         }
-
-        .bgofeasthan {
-                width: 60%;
-                background-color: white;
-                border: 2px solid lightcyan;
-                box-shadow: 2px 2px 5px grey;
-                border-radius: 10px; 
-                padding: 10px;
-                margin: auto;
-                text-align: center;
-        }
-
+        
         .box{
-                width: 70%;
+                width: 95%;
                 background-color: gold;
                 box-shadow: 2px 2px 2px 2px darkgrey;
                 margin: auto;
                 border-radius: 10px;
             }
+        
+        caption {
+             font-size: 24px; color: blue; margin: 10px auto 10px;
+        }
+
+        .tab-container {
+                width: 100%;
+                margin: 0 auto 0;
+        }
+
+        /* nav기능 만들기 */
+        input[type="radio"] {
+                display: none;
+        }
+
+        label {
+                display: inline-block;
+                padding: 12px 20px;
+                background-color: lightgray;
+                margin-right: 5px;
+                cursor: pointer;
+                border-radius: 8px 8px 0 0;
+                transition: background 0.3s;
+        }
+
+        input[type="radio"]:checked + label {
+                background-color:goldenrod;
+                color: white;        
+        }
+        /* 각각의 탭이 체크됐을 때 해당 content 보여주기 */
+                #tab1:checked ~ #content1,
+                #tab2:checked ~ #content2,
+                #tab3:checked ~ #content3,
+                #tab4:checked ~ #content4,
+                #tab5:checked ~ #content5,
+                #tab6:checked ~ #content6 
+        {display: block;}
+
+        .content {
+                display: none;
+                padding: 20px;
+                border-radius: 0 18px 18px 18px;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+                margin-top: -5px;
+        }
 
     </style>    
 
 </head>
-    <body>
-    <a> <span style="color: black; font-weight: bolder;">검색 엔진:</span></a>
-    <a href="https://naver.com" target="_blank">네이버</a>
-    <a href="https://chatgpt.com/" target="_blank">/ ChatGPT</a>
-    <a href="https://gemini.google.com/" target="_blank">/ Gemini</a>
+<body>
 
-    <div style="text-align: center;">
-        <h1>삼국지 인간학</h1>
-        <h2>인물론</h2> 
-        <br>
-        <h2 style="color: rgb(92, 79, 4);">'삼국지'와 '삼국지연의'의 관계</h2>
-    </div>
-    
+    <header>삼국지 인간학에 오신것을 환영합니다
+        <nav class="tab-container">
+            <input type="radio" id="tab1" name="tab" checked />
+            <label for="tab1">인물론</label>            
 
-    <div class="bgofeasthan">    
-        <h3><span style="color: skyblue;">蒼天</span>以死，<span style="color: gold;">黃天</span>當立，勢在甲子，天下大吉</h3>
-        <div class="box" style="text-align: left;">
-            <h2 style="text-align: center; color: grey;">후한의 멸망</h2>
+            <input type="radio" id="tab2" name="tab" checked />
+            <label for="tab2">삼국지와연의</label>
+
+            <input type="radio" id="tab3" name="tab" checked />
+            <label for="tab3">관도대전</label>
+
+            <input type="radio" id="tab4" name="tab" checked />
+            <label for="tab4">적벽대전</label>
+
+            <input type="radio" id="tab5" name="tab" checked />
+            <label for="tab5">이릉대전</label>
+
+            <div class="content" id="content1">
+            <h4>인물론</h4>
+            <p>누가 영웅인가?</p>
+            </div>
+
+            <div class="content" id="content2">
+            <h4>삼국지와 연의</h4>
+            <p>삼국지 정사란 무엇이고, 삼국지 연의는 어떠한가?</p>
+            </div>
+
+            <div class="content" id="content3">
+            <h4>관도대전</h4>
+            <p>조조의 북방통일</p>
+            </div>
+
+            <div class="content" id="content4">
+            <h4>적벽대전</h4>
+            <p>천하삼분지계를 만들어 낸 결정적 전투</p>
+            </div>
+
+            <div class="content" id="content5">
+            <h4>이릉대전</h4>
+            <p>촉나라가 다시 몰락하게 되는 시점</p>
+            </div>
+
+        </nav>
+    </header> 
+        
+    <main>
+        <!-- 창천이사 -->
+        <article>
+            <h3><span style="color: blue;">蒼天</span>以死，<span style="color: gold;">黃天</span>當立，勢在甲子，天下大吉</h3>
+                <div class="box" style="text-align: left;">
+                <h2 style="text-align: center; color: grey;">후한의 멸망</h2>                
             <ol>
                 <li>사실상 천자가 <span style="color: red;">和帝</span>에서 죽은거 맞는지?</li>
                 <li><span style="color: red;">桓帝,靈帝</span>때 나라가 망했다. (출사표)</li>
                 <li>농민의 난, 황건적의 난, 동탁의 난, 이각 및 곽사의 난으로 부터 군웅할거까지</li>
                 <li>奉天子以令不臣, 挾天子以令諸候;
-                <span style="color: blue;"> 治世</span>의<span style="color: red;">能臣</span>,
-                <span style="color: blue;">亂世</span>의<span style="color: red;">奸雄</span></li>
+                <span style="color: blue;">治世</span>의<span style="color: red;">能臣</span>,
+                <span style="color: blue;">亂世</span>의<span style="color: red;">奸雄;</span></li>
             </ol>
-        </div>
-    </div>                          
-               
-    <table border="2" >
-        <caption style="font-size: 24px; color: blue; margin: 10px auto 10px;">동한 14명 황제 즉위 및 사망 연도</caption>
-        <tr>
+                </div>
+        </article>
+        
+        <!-- 동한 14명 황제 즉위/사망연도 -->
+        <article>              
+            <table>
+            <caption>동한 14명 황제 즉위 및 사망 연도</caption>
+            <tr>
             <th>순위</th>
             <th>황제</th>
             <th>재위기간</th>
             <th>즉위나이</th>
             <th>사망연도</th>
-
-        </tr>
-        <tr>
+             </tr>
+            <tr>
             <td>초대</td>
             <td>광무제</td>
             <td>25~57년</td>
             <td>31세즉위</td>
             <td>62세 사망</td>
-        </tr>
-        <tr>
+            </tr>
+            <tr>
             <td>2대</td>
             <td>명제</td>
             <td>57~75년</td>
             <td>30세즉위</td>
             <td>48세 사망</td>
-        </tr>
-        <tr>
+            </tr>
+            <tr>
             <td>3대</td>
             <td>장제</td>
             <td>75~88년</td>
             <td>19세즉위</td>
             <td>32세 사망</td>
-        </tr>
-        <tr>
+            </tr>
+            <tr>
             <td>4대</td>
             <td>화제</td>
             <td>88~105년</td>
             <td>10세즉위</td>
             <td>27세 사망</td>
-        </tr>
-        <tr>
+            </tr>
+            <tr>
             <td>5대</td>
             <td>상제</td>
             <td>105~106년</td>
             <td>100일즉위</td>
             <td>1세 사망</td>
-        </tr>
-        <tr>
+            </tr>
+            <tr>
             <td>6대</td>
             <td>안제</td>
             <td>106~125년</td>
             <td>13세즉위</td>
             <td>32세 사망</td>
-        </tr>
-        <tr>
+            </tr>
+            <tr>
             <td>7대</td>
             <td>소제</td>
             <td>125년</td>
             <td>재위200일</td>
             <td>승인안함</td>
-        </tr>
-        <tr>
+            </tr>
+            <tr>
             <td>8대</td>
             <td>순제</td>
             <td>125~144년</td>
             <td>11세즉위</td>
             <td>30세 사망</td>
-        </tr>
-        <tr>
+            </tr>
+            <tr>
             <td>9대</td>
             <td>충제</td>
             <td>144~145년</td>
             <td>2세즉위</td>
             <td>3세 사망</td>
-        </tr>
-        <tr>
+            </tr>
+            <tr>
             <td>10대</td>
             <td>질제</td>
             <td>145~146년</td>
             <td>8세즉위</td>
             <td>9세 사망</td>
-        </tr>
-        <tr>
+            </tr>
+            <tr>
             <td>11대</td>
             <td>환제</td>
             <td>146~167년</td>
             <td>15세즉위</td>
             <td>37세 사망</td>
-        </tr>
-        <tr>
+            </tr>
+            <tr>
             <td>12대</td>
             <td>영제</td>
             <td>168~189년</td>
             <td>12세즉위</td>
             <td>34세 사망</td>
-        </tr>
-        <tr>
+            </tr>
+            <tr>
             <td>13대</td>
             <td>소제</td>
             <td>189년</td>
             <td>16세즉위</td>
             <td>18세 사망</td>
-        </tr>
-        <tr>
+            </tr>
+            <tr>
             <td>14대</td>
             <td>헌제</td>
             <td>189~220년</td>
             <td>9세즉위</td>
             <td>54세 사망</td>
-        </tr>
-    </table>
-    <br><br>
-
-    <table>
-        <caption style="font-size: 24px; color: blue; margin: 10px auto 10px;">삼국지 정통론</caption>
-        <tr>
+            </tr>
+            </table>
+        </article>
+        
+        <!-- 삼국지 정통론 -->
+        <article>
+            <table>
+            <caption>삼국지 정통론</caption>
+            <tr>
             <th >순서</th>
             <th >내용</th>
             <th >자료</th>
             <th >저자</th>
             <th >연도</th>
-        </tr>
-        <tr>
+            </tr>
+            <tr>
             <td>1</td>
             <td>삼국시대</td>
             <td>-</td>
             <td>-</td>
             <td>184~280</td>
-        </tr>
-        <tr>
+            </tr>
+            <tr>
             <td rowspan="4">2</td>
             <td rowspan="4">정사</td>
             <td rowspan="2">삼국지</td>
             <td>진수</td>
             <td>285</td>
-        </tr>
-        <tr>
+            </tr>
+            <tr>
             <td>배송지</td>
             <td>429</td>
-        </tr>
-        <tr>
+            </tr>
+            <tr>
             <td>후한서</td>
             <td>범영</td>
             <td>445</td>
-        </tr>
-        <tr>
+            </tr>
+            <tr>
             <td>진서</td>
             <td>방현령</td>
             <td>648</td>
-        </tr>
-        <tr>
+            </tr>
+            <tr>
             <td rowspan="3">3</td>
             <td rowspan="3">준정사</td>
             <td>자치통감</td>
             <td>사마광</td>
             <td>1086</td>
-        </tr>
-        <tr>
+            </tr>
+            <tr>
             <td>자치통감강목</td>
             <td rowspan="2">주희</td>
             <td rowspan="2">1200</td>
-        </tr>
-        <tr>
+            </tr>
+            <tr>
             <td>자치통감강목주해</td>
-        </tr>
-        <tr>
+            </tr>
+            <tr>
             <td rowspan="2">4</td>
             <td rowspan="2">연의</td>
             <td rowspan="2">삼국지연의</td>
             <td>나관중</td>
             <td>1321</td>
-        </tr>
-        <tr>
+            </tr>
+            <tr>
             <td>모종강</td>
             <td>1679</td>
-        </tr>
-        <tr>
+            </tr>
+            <tr>
             <td>5</td>
             <td>일본,한국</td>
             <td>만화,소설,게임 등 </td>
             <td>-</td>
             <td>1679~(1940)~</td>
-        </tr>
-        <tr>
+            </tr>
+            <tr>
             <td>6</td>
             <td>문화대혁명</td>
             <td>평론</td>
             <td>모택동</td>
             <td>1966</td>
-        </tr>
-        <tr>
+            </tr>
+            <tr>
             <td rowspan="4">기타</td>
             <td>시</td>
             <td>촉상</td>
             <td>두보</td>
             <td>750</td>
-        </tr>
-        <tr>
+            </tr>
+            <tr>
             <td>사</td>
             <td>적벽부</td>
             <td>소동파</td>
             <td>1082</td>
-        </tr>
-        <tr>
+            </tr>
+            <tr>
             <td>사서</td>
             <td>18사략</td>
             <td>증선지</td>
             <td>1265</td>
-        </tr>
-        <tr>
+            </tr>
+            <tr>
             <td>소설</td>
             <td>삼국지평화</td>
             <td>-</td>
             <td>1320</td>
-        </tr>
-    </table>
+            </tr>
+            </table>
+        </article>
+
+        </main>    
+
+    <footer>&copy;2025 김우성 /
+            <a> <span>검색 엔진:</span></a>
+            <a href="https://naver.com" target="_blank">네이버</a>
+            <a href="https://chatgpt.com/" target="_blank">/ ChatGPT</a>
+            <a href="https://gemini.google.com/" target="_blank">/ Gemini</a>
+    </footer>
         
 </body>
 </html>
