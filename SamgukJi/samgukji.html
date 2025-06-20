@@ -5,18 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>삼국지 인간학</title>
     <style>
-
         body {
             background: url(https://i.pinimg.com/736x/c8/1e/35/c81e357bd8a4004f19c8493c60ff529a.jpg);
             background-size:cover;
+            margin: 0;
+            grid-template-columns: 25% 1fr;
+            grid-template-rows: 80px 1fr 60px;
+            grid-template-areas: 
+                "header header"
+                "sidebar content"
+                "footer footer";    
+            gap: 20px;            
         }
 
         header, footer {
-            background-color: #ffff0080;       
+            background-color: #ffff0040;       
         }
         header {
             text-align: center;
             font-size: 32px;
+            grid-area: header;
         }
         footer {
             font-size: 16px;
@@ -24,16 +32,16 @@
         }
 
         nav {
-            background-color: #ffff0030;
+            background-color: #ffff0020;
         }
 
         main {
-            background-color: #ffff00b0;
+            background-color: #ffff0020;
         }
 
         article {
             width: 40%;
-            background-color: #ffff0080;
+            background-color: #ffff0020;
             border: 2px solid lightcyan;
             box-shadow: 2px 2px 5px grey;
             padding: 10px;
@@ -311,8 +319,7 @@
             <tr>
             <td>1</td>
             <td>삼국시대</td>
-            <td>-</td>
-            <td>-</td>
+            <td colspan="2">-</td>
             <td>184~280</td>
             </tr>
             <tr>
@@ -406,8 +413,8 @@
 
         </main>    
 
-    <footer>&copy;2025 김우성 /
-            <a> <span>검색 엔진:</span></a>
+    <footer>저작권&copy;2025 김우성 /
+            <a> <span style="font-weight: bolder;">검색 엔진:</span></a>
             <a href="https://naver.com" target="_blank">네이버</a>
             <a href="https://chatgpt.com/" target="_blank">/ ChatGPT</a>
             <a href="https://gemini.google.com/" target="_blank">/ Gemini</a>
