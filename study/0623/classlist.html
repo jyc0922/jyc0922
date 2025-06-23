@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>강의 목차</title>
+    <style>
+        header {
+            font-size: larger;
+            font-weight: bolder;
+            background-color: bisque;
+            margin: auto;
+            text-align: center;
+        }
+
+        .inlinebox {
+            display: inline-block;
+            background-color: bisque;
+            color: brown;
+            text-align: center;
+            border: 2px solid black ;
+        }
+
+        section {
+            font-size: 24px;
+            text-align: center;
+        }
+
+        table {
+            border: px solid black;
+            border-collapse: collapse;
+            margin: auto;
+        }
+
+        th {
+            background-color: lightgrey;
+            border: 2px solid black;
+        }
+        td {
+            border: 2px solid black;
+        }
+
+        video {
+            position: relative;
+        }
+
+    </style>
+</head>
+<body>
+    <header>강의 목차
+            <li>수학</li>
+            <li>과학</li>
+            <li>컴퓨터</li>
+            <li>미술</li>
+    </header>
+    <section>
+    <ol>
+        <li class="inlinebox">수학</li>
+        <li class="inlinebox">과학</li>
+        <li class="inlinebox">컴퓨터</li>
+        <li class="inlinebox">미술</li>
+    </ol>
+    </section>
+    <section>
+        <table>
+            <caption style="margin: auto; caption-side: bottom;">2015 국민 독서실태</caption>
+            <tr>
+                <th>구분</th>
+                <th>성인</th>
+                <th>학생</th>
+            </tr>
+            <tr>
+                <td style="background-color: lightgrey;">독서율</td>
+                <td>65.3%</td>
+                <td>94.9%</td>
+            </tr>
+            <tr>
+                <td style="background-color: lightgrey;">연평균 독서율</td>
+                <td>9.1권</td>
+                <td>29.8권</td>
+            </tr>
+            <tr>
+                <td style="background-color: lightgrey;">공공도서관 이용율</td>
+                <td>28.2%</td>
+                <td>64.9%</td>
+            </tr>
+        </table>
+    </section>
+    <section>
+        <p>SUMMER BEACH</p>
+        <video autoplay loop muted>
+            <source src="https://media.istockphoto.com/id/864526000/ko/%EB%B9%84%EB%94%94%EC%98%A4/%EB%B0%B0%EA%B2%BD%EC%97%90%EC%84%9C-%EC%95%84%EB%A6%84-%EB%8B%A4%EC%9A%B4-%EB%A7%88%EC%9A%B4%ED%8A%B8-%ED%9B%84%EB%93%9C%EB%A5%BC-%EB%B0%98%EC%98%81-%ED%95%98%EB%8A%94-%EC%88%B2%EC%97%90%EC%84%9C-%ED%98%B8%EC%88%98-%EA%B3%B5%EC%A4%91-%EC%A7%84%EC%A0%95-%ED%91%9C%EB%A9%B4.mp4?s=mp4-640x640-is&k=20&c=fbWBhodaoic0Ue1Uf_4qe_gtl9emM5hpO8RXQE9AT1w=" type="video/mp4">
+
+        </video>
+
+    </section>
+</body>
+</html>
