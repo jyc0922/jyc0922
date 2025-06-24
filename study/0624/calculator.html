@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>함수 계산기 예제</title>
+</head>
+<body>
+    <script>
+        //함수 계산기 예제
+
+        //더하기 함수
+        function add(a,b) {
+            return a + b;
+        }
+
+        const addition = function (a,b) {
+            return a + b;
+        }
+
+        //빼기 함수
+        function sub(a,b) {
+            return a - b;
+        }
+
+        const subtract = function (a,b) {
+            return a - b;
+        }
+
+        //곱하기 함수
+        function mul(a,b) {
+            return a * b;
+        }
+
+        const multiply = function (a,b) {
+            return a * b;
+        }
+
+        //나누기 함수
+        function div(a,b) {
+            return a / b;
+        }
+
+        const divide = function (a,b) {
+            return a / b;
+        }
+
+        //나머지 함수
+        function mod(a,b) {
+            return a % b;
+        }
+
+        const modulator = function (a,b) {
+            return a % b;
+        }
+
+        const num1 = Number(prompt("첫번째 숫자를 입력하세요."));
+        const operator = prompt("연산자를 입력하세요");
+        const num2 = Number(prompt("두번째 숫자를 입력하세요."));
+
+        let result = 0;
+        if (operator === "+") {
+            console.log(`${num1} + ${num2} = ${num1 + num2}` );
+        } else if (operator === "-") {
+            console.log(`${num1} - ${num2} = ${num1 - num2}` );
+        } else if (operator === "*") {
+            console.log(`${num1} * ${num2} = ${num1 * num2}` );
+        } else if (operator === "/") {
+            console.log(`${num1} / ${num2} = ${num1 / num2}` );
+        } else if (operator === "%") {
+            console.log(`${num1} % ${num2} = ${num1 % num2}` );
+        } else {
+            console.log("잘못 된 입력입니다.");
+        }
+
+    </script>
+    
+</body>
+</html>
