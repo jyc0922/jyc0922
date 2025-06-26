@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML5 Layout</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: sans-serif;
+        }
+
+        .container {
+            width: 100%;
+        }
+
+        header, nav, section, aside, footer {
+            background-color: goldenrod;
+            color: white;
+            padding: 20px;
+            border: 1px solid white;
+            text-align: center;
+        }
+
+        nav {
+            margin-top: 5px;
+        }
+
+        .main {
+            display: flex;
+        }
+
+        .content {
+            flex: 3;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        aside {
+            flex: 1;
+            margin-left: 5px;
+        }
+
+        footer {
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>&lt;header&gt;</header>
+        <nav>&lt;nav&gt;</nav>
+
+        <div class="main">
+            <div class="content">
+                <section>&lt;section&gt;</section>
+                <section>&lt;section&gt;</section>
+            </div>
+            <aside>&lt;sidebar&gt;</aside>
+        </div>
+
+        <footer>&lt;foot&gt;</footer>
+    </div>
+</body>
+</html>
