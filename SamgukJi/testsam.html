@@ -7,112 +7,94 @@
     <style>
         /* CSS Variables for consistent styling and easy modification */
         :root {
-            --header-height: 80px;
-            --footer-height: 60px;
-            --gap-desktop: 20px;
-            --gap-mobile: 15px;
-            --sidebar-width-desktop: 25%;
-            --primary-bg-color: rgba(255, 255, 0, 0.4); /* Yellow with transparency */
-            --secondary-bg-color: rgba(255, 255, 136, 0.8); /* Lighter yellow with more transparency for sidebar */
-            --content-bg-color: rgba(255, 255, 136, 0.9); /* Even lighter for main content area */
-            --article-bg-color: rgba(255, 255, 0, 0.2); /* Light yellow for articles */
-            --text-color: #333;
-            --link-color: #fff;
-            --link-hover-color: #ffd700; /* Goldenrod */
-            --border-color: lightcyan;
-            --shadow-color: rgba(0, 0, 0, 0.3);
-            --tab-label-bg: #e0e0e0;
-            --tab-label-active-bg: goldenrod;
-            --tab-label-color: #555;
-            --tab-label-active-color: white;
-            --table-border-color: goldenrod;
-            --table-header-bg: bisque;
-            --table-row-even-bg: lightyellow;
-            --table-row-odd-bg: lightgoldenrodyellow;
-            --box-bg-color: gold;
-            --footer-text-color: #333; /* Darker text for footer */
-        }
+      --color-parchment: #f5e9d3;        /* 두루마리(양피지) 베이스 */
+      --color-wood: #3d2b1f;             /* 짙은 목재 브라운 */
+      --color-gold: #c49b66;             /* 은은한 금빛 */
+      --color-ink: #2b1a0e;              /* 먹물 같은 다크 브라운 */
+      --color-accent: #7d5a4f;           /* 전통 도자기 물레 느낌 */
+      --gap-desktop: 20px;
+      --gap-mobile: 15px;
+      --header-height: 80px;
+      --footer-height: 60px;
+      --sidebar-width-desktop: 25%;
+      --shadow-color: rgba(0, 0, 0, 0.2);
+    }
 
         body {
-            display: grid;
-            background: url(https://i.pinimg.com/736x/c8/1e/35/c81e357bd8a4004f19c8493c60ff529a.jpg) no-repeat center center fixed;
-            background-size: cover;
-            margin: 0;
-            min-height: 100vh; /* Ensure body takes full viewport height */
-            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Prefer Inter if available, fallback to Segoe UI */
-            color: var(--text-color);
-            overflow-x: hidden; /* Prevent horizontal scrolling */
+      display: grid;
+      grid-template-columns: var(--sidebar-width-desktop) 1fr;
+      grid-template-rows: var(--header-height) auto 1fr var(--footer-height);
+      grid-template-areas:
+        "header header"
+        "nav nav"
+        "aside main"
+        "footer footer";
+      gap: var(--gap-desktop);
 
-            /* Desktop layout using CSS Grid */
-            grid-template-columns: var(--sidebar-width-desktop) 1fr;
-            grid-template-rows: var(--header-height) auto 1fr var(--footer-height);
-            grid-template-areas:
-                "header header"
-                "nav nav"
-                "aside main"
-                "footer footer";
-            gap: var(--gap-desktop); /* Gap between grid items */
-        }
+      margin: 0;
+      min-height: 100vh;
+      font-family: 'Noto Serif KR', serif;
+      color: var(--color-ink);
+
+      background: url('./images/parchment-background.jpg') no-repeat center center fixed;
+      background-size: cover;
+    }
 
         /* Header styling */
         header {
-            grid-area: header;
-            background-color: var(--primary-bg-color);
-            text-align: center;
-            font-size: 2.5em; /* Responsive font size for larger screens */
-            line-height: var(--header-height);
-            color: var(--link-color);
-            text-shadow: 2px 2px 4px var(--shadow-color);
-            border-bottom: 2px solid var(--border-color);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            border-radius: 0 0 15px 15px; /* Rounded bottom corners */
-        }
+      grid-area: header;
+      background-color: var(--color-wood);
+      color: var(--color-parchment);
+      text-align: center;
+      line-height: var(--header-height);
+      font-size: 1.8em;
+      box-shadow: 0 2px 6px var(--shadow-color);
+      border-bottom: 2px solid var(--color-gold);
+    }
 
         header h1 {
             margin: 0; /* Remove default margin for h1 */
             font-size: 1em; /* Make h1 inherit parent's font-size set above */
         }
 
-        /* Footer styling */
-        footer {
-            grid-area: footer;
-            background-color: var(--primary-bg-color);
-            font-size: 0.9em;
-            text-align: center;
-            line-height: var(--footer-height);
-            color: var(--footer-text-color); /* Darker text color */
-            padding: 0 10px;
-            border-top: 2px solid var(--border-color);
-            box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
-            border-radius: 15px 15px 0 0; /* Rounded top corners */
-        }
+    /* — 푸터 — */
+    footer {
+      grid-area: footer;
+      background-color: var(--color-wood);
+      color: var(--color-parchment);
+      text-align: center;
+      line-height: var(--footer-height);
+      border-top: 2px solid var(--color-gold);
+      box-shadow: 0 -2px 6px var(--shadow-color);
+    }
+    footer a {
+      color: var(--color-parchment);
+      text-decoration: none;
+      margin: 0 8px;
+    }
+    footer a:hover {
+      color: var(--color-gold);
+    }
 
-        footer a {
-            color: var(--footer-text-color); /* Darker link color */
-            text-decoration: none;
-            margin: 0 5px;
-            transition: color 0.3s ease;
-        }
+        /* — 내비게이션 — */
+    nav {
+      grid-area: nav;
+      background-color: rgba(61,43,31,0.85);
+      padding: 10px var(--gap-desktop);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      border-bottom: 1px solid var(--color-gold);
+    }
 
-        footer a:hover {
-            color: var(--link-hover-color);
-        }
-
-        /* Navigation styling (tab container) */
-        nav {
-            grid-area: nav;
-            background-color: var(--primary-bg-color);
-            padding: 10px 20px;
-            box-sizing: border-box;
-            display: flex;
-            flex-wrap: wrap; /* Allow tabs to wrap on smaller screens */
-            justify-content: center; /* Center nav items */
-            align-items: center;
-            border-bottom: 1px solid rgba(255, 255, 0, 0.3);
-            border-radius: 10px; /* Slightly rounded overall nav */
-            margin: 0 var(--gap-desktop); /* Horizontal margin to match grid gap */
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
+    nav .nav-item {
+      background-color: var(--color-accent);
+      border: 1px solid var(--color-gold);
+      color: var(--color-wood);
+    }
+    nav .nav-item h3 {
+      color: var(--color-wood);
+    }
 
         .tab-container {
             /* nav와 똑같이 동작하도록 복사 */
@@ -193,21 +175,22 @@
             display: block; /* Display the active tab content */
         }
 
-        /* Aside (sidebar) styling */
-        aside {
-            grid-area: aside;
-            background-color: var(--secondary-bg-color);
-            padding: var(--gap-desktop);
-            box-shadow: 2px 0 5px var(--shadow-color);
-            overflow-y: auto; /* Allow scrolling for long content */
-            border-radius: 10px;
-            margin-left: var(--gap-desktop); /* Left margin to align with grid */
-            box-sizing: border-box;
-            display: flex; /* Use flexbox for vertical stacking */
-            flex-direction: column; /* Stack children vertically */
-            align-items: center; /* Center children horizontally */
-            gap: 10px; /* Smaller gap for many buttons */
-        }
+        /* — 사이드바 — */
+    aside {
+      grid-area: aside;
+      background-color: rgba(245,233,211,0.9);
+      padding: var(--gap-desktop);
+      box-shadow: 2px 0 5px var(--shadow-color);
+      border-right: 2px solid var(--color-gold);
+    }
+
+    aside .box {
+      background-color: var(--color-parchment);
+      border: 1px solid var(--color-accent);
+    }
+    aside .box h2 {
+      color: var(--color-ink);
+    }
 
         aside article {
             width: 100%; /* Ensure article within aside takes full width */
@@ -253,33 +236,19 @@
             margin-bottom: 8px;
         }
 
-        /* Main content area styling */
-        main {
-            grid-area: main;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive grid for articles */
-            gap: var(--gap-desktop);
-            background-color: var(--content-bg-color);
-            padding: var(--gap-desktop);
-            overflow-y: auto; /* Allow scrolling for long content */
-            border-radius: 10px;
-            margin-right: var(--gap-desktop); /* Right margin to align with grid */
-            box-sizing: border-box;
-        }
-
-        /* Article styling within main content */
-        main article {
-            background-color: var(--article-bg-color);
-            border: 2px solid var(--border-color);
-            border-radius: 8px;
-            box-shadow: 3px 3px 8px var(--shadow-color);
-            padding: 15px;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            box-sizing: border-box;
-        }
+     /* — 메인 콘텐츠 — */
+    main {
+      grid-area: main;
+      background-color: rgba(245,233,211,0.85);
+      padding: var(--gap-desktop);
+      box-shadow: -2px 0 5px var(--shadow-color);
+      border-left: 2px solid var(--color-gold);
+    }
+    main article {
+      background-color: var(--color-parchment);
+      border: 1px solid var(--color-accent);
+      box-shadow: 0 2px 4px var(--shadow-color);
+    }
 
         /* Table styling */
         table {
@@ -539,17 +508,16 @@
 
         /* Mobile devices */
         @media (max-width: 768px) {
-            body {
-                grid-template-columns: 1fr; /* Single column layout */
-                grid-template-rows: var(--header-height) auto auto 1fr var(--footer-height); /* Nav, aside, main stack */
-                grid-template-areas:
-                    "header"
-                    "nav"
-                    "aside"
-                    "main"
-                    "footer";
-                gap: var(--gap-mobile);
-            }
+       body {
+        gap: var(--gap-mobile);
+        grid-template-columns: 1fr;
+        grid-template-areas:
+          "header"
+          "nav"
+          "aside"
+          "main"
+          "footer";
+      }
 
             header {
                 font-size: 1.8em; /* Smaller font size for header */
@@ -577,11 +545,10 @@
                 width: 100%; /* Make label take full width */
             }
 
-            aside, main {
-                padding: var(--gap-mobile);
-                margin: 0; /* Remove side margins */
-                border-radius: 0; /* Remove rounded corners */
-            }
+      aside, main {
+        border: none;
+        box-shadow: none;
+      }
 
             main {
                 grid-template-columns: 1fr; /* Stack articles vertically */
