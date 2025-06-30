@@ -46,10 +46,10 @@
 
    |상태 코드   |요청 결과      |
    |----------|--------------|
-   |2xx Success|요청이 성공적으로 처리 됨(예: **200 OK**, **201 Created**)|
-   |2xx Redirection|요청을 완료하기 위해 추가적인 동작이 필요함을 의미(예: **301 Moved Permanently**, **302 Found**)|
-   |4xx Client Error|클라이언트의 잘못된 요청으로 인해 발생(예: **400 Bad Request**, **401 Unauthorized**, **403 Forbidden**, **404 Not Found**)|
-   |5xx Server Error|서버의 문제로 인해 요청 처리 실패(예: **500 Internal Server Error**, **503 Service Unavailable**)|
+   |**2xx:** **Success|요청이 성공적으로 처리 됨(예: **200 OK**, **201 Created**)|
+   |**3xx:** Redirection|요청을 완료하기 위해 추가적인 동작이 필요함을 의미(예: **301 Moved Permanently**, **302 Found**)|
+   |**4xx:** Client Error|클라이언트의 잘못된 요청으로 인해 발생(예: **400 Bad Request**, **401 Unauthorized**, **403 Forbidden**, **404 Not Found**)|
+   |**5xx:** Server Error|서버의 문제로 인해 요청 처리 실패(예: **500 Internal Server Error**, **503 Service Unavailable**)|
 
    * 상태메시지(Reason Phrase): 상태 코드를 설명하는 짧은 테스트
     > **HTTP/1.1/ 200 OK**

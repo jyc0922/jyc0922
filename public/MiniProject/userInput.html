@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>사용자 입력</title>
+    <style>
+        /* CSS 시작 */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f7f6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            color: #333;
+        }
+
+        .container {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-size: 2em;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        textarea {
+            width: calc(100% - 20px);
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 1em;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        textarea:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        button {
+            background-color: #3498db;
+            color: white;
+            padding: 15px 25px;
+            border: none;
+            border-radius: 6px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        .message {
+            margin-top: 20px;
+            color: green;
+            font-weight: bold;
+        }
+        /* CSS 끝 */
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>법률 컨설팅 신청</h1>
+        <p>간단한 정보를 입력하여 컨설팅을 신청해주세요. 곧 연락드리겠습니다.</p>
+        <form id="consultationForm">
+            <div class="form-group">
+                <label for="name">이름:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">이메일:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="phone">연락처 (선택 사항):</label>
+                <input type="text" id="phone" name="phone">
+            </div>
+            <div class="form-group">
+                <label for="message">상담 내용:</label>
+                <textarea id="message" name="message" rows="5" required></textarea>
+            </div>
+            <button type="submit">신청하기</button>
+            <div id="formMessage" class="message"></div>
+        </form>
+    </div>
+
+    <script>
+        /* JavaScript 시작 */
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('consultationForm');
+            const formMessage = document.getElementById('formMessage');
+
+            form.addEventListener('submit', function(event) {
+                event.preventDefault(); // 기본 폼 제출 동작 방지
+
+                const name = document.getElementById('name').value;
+                const email = document.getElementById('email').value;
+                const phone = document.getElementById('phone').value;
+                const message = document.getElementById('message').value;
+
+                // 간단한 유효성 검사 (실제 환경에서는 더 강력한 유효성 검사가 필요)
+                if (name.trim() === '' || email.trim() === '' || message.trim() === '') {
+                    formMessage.textContent = '이름, 이메일, 상담 내용은 필수 입력 항목입니다.';
+                    formMessage.style.color = 'red';
+                    return;
+                }
+
+                // 여기에 폼 데이터를 서버로 전송하는 로직을 추가할 수 있습니다.
+                // 현재는 콘솔에 출력하고 사용자에게 알림만 줍니다.
+                console.log('--- 상담 신청 정보 ---');
+                console.log('이름:', name);
+                console.log('이메일:', email);
+                console.log('연락처:', phone);
+                console.log('상담 내용:', message);
+                console.log('--------------------');
+
+                // 사용자에게 성공 메시지 표시
+                formMessage.textContent = '신청이 성공적으로 접수되었습니다. 곧 연락드리겠습니다!';
+                formMessage.style.color = 'green';
+
+                // 폼 필드 초기화 (선택 사항)
+                form.reset();
+            });
+        });
+        /* JavaScript 끝 */
+    </script>
+</body>
+</html>

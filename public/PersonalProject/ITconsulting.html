@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IT 컨설팅 전문가 그룹</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700&family=Playfair+Display:wght@400;700&display=swap');
+
+        :root {
+            --primary-color: #2c3e50; /* 다크 네이비 */
+            --secondary-color: #34495e; /* 어두운 회색 */
+            --accent-color: #e67e22; /* 오렌지 */
+            --text-light: #ecf0f1; /* 밝은 회색 */
+            --text-dark: #34495e; /* 어두운 텍스트 */
+            --bg-light: #f8f9fa; /* 매우 밝은 회색 */
+            --bg-dark: #212529; /* 거의 검정 */
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background-color: var(--bg-light);
+            overflow-x: hidden;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            padding: 1.5em 0;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 1000;
+        }
+
+        header .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2em;
+            font-weight: 700;
+            color: var(--accent-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-placeholder {
+            width: 40px;
+            height: 40px;
+            background-color: var(--accent-color);
+            border-radius: 50%;
+            margin-right: 10px;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2em;
+            color: var(--text-light);
+            font-weight: 700;
+        }
+
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        nav ul li {
+            margin-left: 30px;
+        }
+
+        nav ul li a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 400;
+            font-size: 1.1em;
+            transition: color 0.3s ease, border-bottom 0.3s ease;
+            padding-bottom: 5px;
+        }
+
+        nav ul li a:hover {
+            color: var(--accent-color);
+            border-bottom: 2px solid var(--accent-color);
+        }
+
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://source.unsplash.com/1600x900/?tech-consulting,business-strategy') no-repeat center center/cover;
+            color: var(--text-light);
+            text-align: center;
+            padding: 8em 20px;
+            height: 60vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 900px;
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.8em;
+            margin-bottom: 0.5em;
+            line-height: 1.2;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero p {
+            font-size: 1.5em;
+            margin-bottom: 2em;
+            font-weight: 300;
+            opacity: 0.9;
+        }
+
+        .btn {
+            background-color: var(--accent-color);
+            color: var(--text-light);
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 1.2em;
+            font-weight: 700;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn:hover {
+            background-color: #d35400;
+            transform: translateY(-3px);
+        }
+
+        .section {
+            padding: 5em 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+            position: relative;
+        }
+
+        .section h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8em;
+            color: var(--primary-color);
+            margin-bottom: 1em;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section h2::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background-color: var(--accent-color);
+            margin: 10px auto 0;
+            border-radius: 2px;
+        }
+
+        .section-content {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-top: 3em;
+        }
+
+        .service-card, .value-card {
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            flex: 1 1 calc(33% - 40px);
+            min-width: 300px;
+            text-align: left;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border-top: 5px solid var(--primary-color);
+        }
+
+        .service-card:hover, .value-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .service-card i, .value-card i {
+            font-size: 3em;
+            color: var(--accent-color);
+            margin-bottom: 20px;
+        }
+
+        .service-card h3, .value-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8em;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        .service-card p, .value-card p {
+            font-size: 1.1em;
+            color: var(--secondary-color);
+        }
+
+        .about-us {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+        }
+
+        .about-us .section-content {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 50px;
+            text-align: left;
+        }
+
+        .about-us-text {
+            flex: 2;
+        }
+
+        .about-us-image {
+            flex: 1;
+            text-align: center;
+        }
+
+        .about-us-image img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        .about-us h2 {
+            color: var(--text-light);
+        }
+        
+        .about-us p {
+            font-size: 1.2em;
+            line-height: 1.8;
+            margin-bottom: 1.5em;
+            color: #bdc3c7;
+        }
+
+        .call-to-action {
+            background-color: var(--accent-color);
+            color: var(--text-light);
+            padding: 4em 20px;
+            text-align: center;
+        }
+
+        .call-to-action h2 {
+            color: var(--text-light);
+            font-size: 2.5em;
+            margin-bottom: 1em;
+        }
+
+        .call-to-action .btn {
+            background-color: var(--primary-color);
+        }
+
+        .call-to-action .btn:hover {
+            background-color: var(--secondary-color);
+        }
+
+        footer {
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            text-align: center;
+            padding: 2em 0;
+            font-size: 0.9em;
+            box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        footer .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+            align-items: flex-start;
+        }
+
+        footer .footer-col {
+            flex: 1;
+            min-width: 200px;
+            text-align: left;
+        }
+
+        footer .footer-col h4 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4em;
+            margin-bottom: 15px;
+            color: var(--accent-color);
+        }
+
+        footer .footer-col ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        footer .footer-col ul li {
+            margin-bottom: 10px;
+        }
+
+        footer .footer-col ul li a {
+            color: var(--text-light);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        footer .footer-col ul li a:hover {
+            color: var(--accent-color);
+        }
+
+        .social-icons a {
+            color: var(--text-light);
+            font-size: 1.5em;
+            margin-right: 15px;
+            transition: color 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            color: var(--accent-color);
+        }
+
+        .footer-bottom {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            width: 100%;
+            text-align: center;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 3em;
+            }
+            .hero p {
+                font-size: 1.3em;
+            }
+            nav ul {
+                display: none; /* Simplistic mobile nav - can be replaced with a hamburger menu */
+            }
+            header .container {
+                justify-content: center;
+                flex-direction: column;
+            }
+            .logo {
+                margin-bottom: 15px;
+            }
+            .service-card, .value-card {
+                flex: 1 1 calc(50% - 30px);
+            }
+            .about-us .section-content {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                padding: 6em 20px;
+                height: 50vh;
+            }
+            .hero h1 {
+                font-size: 2.5em;
+            }
+            .hero p {
+                font-size: 1.1em;
+            }
+            .btn {
+                padding: 12px 25px;
+                font-size: 1em;
+            }
+            .section {
+                padding: 3em 20px;
+            }
+            .section h2 {
+                font-size: 2em;
+            }
+            .service-card, .value-card {
+                flex: 1 1 100%;
+                min-width: unset;
+                margin-bottom: 20px;
+            }
+            footer .container {
+                flex-direction: column;
+                align-items: center;
+            }
+            footer .footer-col {
+                text-align: center;
+                margin-bottom: 20px;
+            }
+        }
+
+        /* Simple Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero-content, .section h2, .service-card, .value-card, .about-us-text, .about-us-image, .call-to-action h2, .call-to-action .btn, footer .footer-col {
+            animation: fadeIn 0.8s ease-out forwards;
+            opacity: 0; /* Hidden by default */
+        }
+        
+        .hero-content { animation-delay: 0.3s; }
+        .section h2 { animation-delay: 0.2s; }
+        .service-card:nth-child(1) { animation-delay: 0.4s; }
+        .service-card:nth-child(2) { animation-delay: 0.6s; }
+        .service-card:nth-child(3) { animation-delay: 0.8s; }
+        /* Add delays for other elements as needed */
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <a href="#" class="logo">
+                <span class="logo-placeholder">A</span>
+                [귀사 로고/회사명]
+            </a>
+            <nav>
+                <ul>
+                    <li><a href="#home">홈</a></li>
+                    <li><a href="#about">회사소개</a></li>
+                    <li><a href="#services">서비스</a></li>
+                    <li><a href="#values">핵심 가치</a></li>
+                    <li><a href="#contact">문의</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section id="home" class="hero">
+            <div class="hero-content">
+                <h1>디지털 전환을 선도하는 <br>프리미엄 IT 컨설팅</h1>
+                <p>혁신적인 전략과 기술로 귀사의 비즈니스 성장을 이끌어 드립니다.</p>
+                <a href="#contact" class="btn">지금 바로 문의하기</a>
+            </div>
+        </section>
+
+        <section id="about" class="section about-us">
+            <div class="container">
+                <h2 class="animate-on-scroll">회사소개</h2>
+                <div class="section-content">
+                    <div class="about-us-text animate-on-scroll">
+                        <p>저희 **[귀사 이름]**은 급변하는 IT 환경 속에서 기업들이 직면하는 복잡한 과제들을 해결하고, 지속 가능한 성장을 위한 최적의 솔루션을 제공하는 데 집중합니다.</p>
+                        <p>수년간의 경험과 깊이 있는 전문성을 바탕으로, 전략 수립부터 시스템 구축, 운영 최적화에 이르기까지 IT 컨설팅의 전 영역에 걸쳐 최고 수준의 서비스를 제공합니다. 고객의 비즈니스 목표를 명확히 이해하고, 이를 달성하기 위한 맞춤형 전략과 실질적인 실행 방안을 제시하여 성공적인 디지털 전환을 이끌어 드립니다.</p>
+                        <p>저희는 단순히 기술을 제안하는 것을 넘어, 고객사의 비즈니스 가치를 극대화하고 미래 경쟁력을 확보하는 데 기여하는 **진정한 비즈니스 파트너**가 될 것을 약속드립니다.</p>
+                    </div>
+                    <div class="about-us-image animate-on-scroll">
+                        <img src="https://source.unsplash.com/400x400/?business-meeting,strategy" alt="팀 미팅">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="services" class="section">
+            <div class="container">
+                <h2 class="animate-on-scroll">주요 서비스</h2>
+                <div class="section-content">
+                    <div class="service-card animate-on-scroll">
+                        <i class="fas fa-chart-line"></i>
+                        <h3>IT 전략 컨설팅</h3>
+                        <p>기업의 비즈니스 목표에 부합하는 IT 로드맵 수립, 디지털 전환 전략 및 신기술 도입 전략을 제공합니다.</p>
+                    </div>
+                    <div class="service-card animate-on-scroll">
+                        <i class="fas fa-cloud"></i>
+                        <h3>클라우드 솔루션</h3>
+                        <p>클라우드 아키텍처 설계, 마이그레이션, 최적화 등 클라우드 기반의 효율적인 IT 인프라 구축을 돕습니다.</p>
+                    </div>
+                    <div class="service-card animate-on-scroll">
+                        <i class="fas fa-shield-alt"></i>
+                        <h3>정보보안 컨설팅</h3>
+                        <p>기업의 핵심 자산을 보호하고 규제 준수를 위한 정보보안 진단, 취약점 분석 및 보안 시스템 구축을 지원합니다.</p>
+                    </div>
+                    <div class="service-card animate-on-scroll">
+                        <i class="fas fa-cogs"></i>
+                        <h3>시스템 통합 (SI)</h3>
+                        <p>다양한 시스템과 솔루션을 통합하여 효율적인 비즈니스 프로세스를 구축하고 운영을 최적화합니다.</p>
+                    </div>
+                    <div class="service-card animate-on-scroll">
+                        <i class="fas fa-brain"></i>
+                        <h3>데이터 분석 & AI</h3>
+                        <p>빅데이터 분석, 머신러닝, 인공지능 기반의 통찰력 있는 데이터 활용 전략을 통해 의사결정을 지원합니다.</p>
+                    </div>
+                    <div class="service-card animate-on-scroll">
+                        <i class="fas fa-users-cog"></i>
+                        <h3>IT 거버넌스</h3>
+                        <p>IT 자원의 효율적 관리, 위험 통제, 규제 준수를 위한 IT 거버넌스 체계 수립 및 개선을 지원합니다.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="values" class="section">
+            <div class="container">
+                <h2 class="animate-on-scroll">우리의 핵심 가치</h2>
+                <div class="section-content">
+                    <div class="value-card animate-on-scroll">
+                        <i class="fas fa-gem"></i>
+                        <h3>전문성</h3>
+                        <p>각 분야 최고의 전문가들이 깊이 있는 지식과 풍부한 경험을 바탕으로 최상의 솔루션을 제공합니다.</p>
+                    </div>
+                    <div class="value-card animate-on-scroll">
+                        <i class="fas fa-handshake"></i>
+                        <h3>신뢰</h3>
+                        <p>투명하고 정직한 소통으로 고객과의 장기적인 파트너십을 구축하며, 약속을 반드시 지킵니다.</p>
+                    </div>
+                    <div class="value-card animate-on-scroll">
+                        <i class="fas fa-lightbulb"></i>
+                        <h3>혁신</h3>
+                        <p>최신 기술 트렌드를 끊임없이 연구하고 적용하여, 혁신적인 접근 방식으로 새로운 가치를 창출합니다.</p>
+                    </div>
+                    <div class="value-card animate-on-scroll">
+                        <i class="fas fa-medal"></i>
+                        <h3>고객 중심</h3>
+                        <p>고객의 성공을 최우선으로 생각하며, 맞춤형 전략과 실행을 통해 실질적인 성과를 약속합니다.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="call-to-action animate-on-scroll">
+            <div class="container">
+                <h2>귀사의 디지털 미래를 함께 만들어갈 준비가 되셨나요?</h2>
+                <p>지금 바로 문의하여 전문가와 상담하세요.</p>
+                <a href="mailto:contact@yourcompany.com" class="btn">문의하기</a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-col animate-on-scroll">
+                <h4>[귀사 로고/회사명]</h4>
+                <p>디지털 전환을 선도하는 프리미엄 IT 컨설팅.</p>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            <div class="footer-col animate-on-scroll">
+                <h4>빠른 링크</h4>
+                <ul>
+                    <li><a href="#home">홈</a></li>
+                    <li><a href="#about">회사소개</a></li>
+                    <li><a href="#services">서비스</a></li>
+                    <li><a href="#contact">문의</a></li>
+                </ul>
+            </div>
+            <div class="footer-col animate-on-scroll">
+                <h4>연락처</h4>
+                <p><i class="fas fa-map-marker-alt"></i> 서울시 강남구 테헤란로 1234</p>
+                <p><i class="fas fa-phone-alt"></i> +82 (0)2-1234-5678</p>
+                <p><i class="fas fa-envelope"></i> contact@yourcompany.com</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 [귀사 로고/회사명]. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation links
+            document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+
+            // Intersection Observer for scroll animations
+            const animateOnScrollElements = document.querySelectorAll('.animate-on-scroll');
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                        observer.unobserve(entry.target); // Stop observing once animated
+                    }
+                });
+            }, {
+                threshold: 0.1, // Trigger when 10% of the element is visible
+                rootMargin: '0px 0px -50px 0px' // Adjust for better trigger
+            });
+
+            animateOnScrollElements.forEach(element => {
+                observer.observe(element);
+            });
+        });
+    </script>
+</body>
+</html>
