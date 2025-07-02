@@ -842,6 +842,114 @@
             #overlay-prev-btn { left: 10px; }
             #overlay-next-btn { right: 10px; }
         }
+
+        /* 인물 상세 모달 꾸미기 */
+        #character-detail-overlay {
+            background: rgba(30, 20, 10, 0.70);
+            backdrop-filter: blur(2.5px);
+            z-index: 1000;
+        }
+        #character-detail-overlay .image-wrapper {
+            background: linear-gradient(135deg, #f8f4eb 80%, #e2d2b6 100%);
+            border-radius: 32px;
+            box-shadow: 0 8px 40px rgba(80,60,30,0.18);
+            padding: 48px 36px 40px 36px;
+            min-width: 60vw;
+            min-height: 60vh;
+            max-width: 900px;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 32px;
+        }
+        #character-detail-name-btn {
+            font-size: 2.2em;
+            padding: 26px 70px;
+            border-radius: 20px;
+            background: linear-gradient(135deg,#6a5acd,#483d8b); /* 모든 진영에 어울리는 보라-남색 계열 */
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 6px 24px rgba(0,0,0,0.18);
+            font-weight: 900;
+            margin-bottom: 0;
+            margin-top: 0;
+            letter-spacing: 1.5px;
+            transition: background 0.25s, box-shadow 0.2s, transform 0.15s;
+            outline: none;
+            text-shadow: 1px 2px 8px rgba(80,60,30,0.10);
+        }
+        /* 진영별 색상 오버라이드 */
+        .character-modal-name-btn.sun { background: linear-gradient(135deg,#228B22,#6B8E23); }
+        .character-modal-name-btn.liu { background: linear-gradient(135deg,#A0522D,#D2691E); }
+        .character-modal-name-btn.etc { background: linear-gradient(135deg,#4682B4,#708090); }
+        #character-detail-alt-btns {
+            display: grid !important;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 18px 18px;
+            width: 100%;
+            max-width: 700px;
+            margin-bottom: 0;
+            justify-items: center;
+            align-items: center;
+            padding: 0 0 8px 0;
+        }
+        #character-detail-alt-btns .toggle-btn {
+            font-size: 1.08em;
+            padding: 12px 0;
+            border-radius: 10px;
+            min-width: 110px;
+            background: linear-gradient(135deg,#8B4513,#A0522D);
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.13);
+            font-weight: bold;
+            transition: background 0.2s, box-shadow 0.2s, transform 0.15s;
+            margin: 0;
+            outline: none;
+        }
+        #character-detail-alt-btns .toggle-btn:disabled {
+            background: linear-gradient(135deg,#A0522D,#8B4513);
+            filter: brightness(1.08);
+            box-shadow: 0 4px 16px rgba(139,69,19,0.18);
+            font-weight: 900;
+            transform: scale(1.04);
+        }
+        #character-detail-graph {
+            width: 60vw !important;
+            height: 60vh !important;
+            min-width: 520px !important;
+            min-height: 420px !important;
+            max-width: 800px;
+            max-height: 600px;
+            background: linear-gradient(135deg,#f8f4eb 80%, #e2d2b6 100%);
+            border-radius: 24px;
+            box-shadow: 0 4px 32px rgba(80,60,30,0.13);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #888;
+            font-size: 1.35em;
+            margin-top: 0;
+            margin-bottom: 0;
+            border: 2.5px solid #d2b48c;
+            font-family: 'Georgia', 'Inter', serif;
+        }
+        @media (max-width: 900px) {
+            #character-detail-overlay .image-wrapper {
+                min-width: 90vw;
+                padding: 18px 2vw 18px 2vw;
+            }
+            #character-detail-graph {
+                min-width: 90vw !important;
+                width: 98vw !important;
+                height: 38vh !important;
+                min-height: 220px !important;
+            }
+        }
     </style>
 </head>
 
@@ -1011,6 +1119,17 @@
             <h3 style="color:#fff; margin-top:20px;">기타 진영 대표 이미지</h3>
         </div>
     </div>
+    <!-- 인물 상세 오버레이 프레임 -->
+    <div id="character-detail-overlay" class="time-flow-overlay">
+        <button id="character-detail-close-btn" class="overlay-close-btn" aria-label="닫기">×</button>
+        <div class="image-wrapper">
+            <button id="character-detail-name-btn" class="character-modal-name-btn">인물명</button>
+            <div id="character-detail-alt-btns"></div>
+            <div id="character-detail-graph">
+                (여기에 능력치 그래프가 표시됩니다)
+            </div>
+        </div>
+    </div>
 <script>
 (function() {
     let currentList = [];
@@ -1157,6 +1276,429 @@
             overlayLiu.classList.remove('active');
             overlayEtc.classList.remove('active');
             document.body.style.overflow = '';
+        }
+    });
+
+    // === 인물 상세 오버레이에 조비, 조예 버튼 추가 ===
+    const charOverlay = document.getElementById('character-detail-overlay');
+    const charNameBtn = document.getElementById('character-detail-name-btn');
+    const charGraph = document.getElementById('character-detail-graph');
+    const charAltBtns = document.getElementById('character-detail-alt-btns');
+    let currentCharName = '';
+    const lordStats = {
+        '조조': [10, 10, 7, 10, 8, 10, 10, 5],
+        '조비': [10, 9, 5, 9, 9, 9, 9, 5],
+        '조예': [8, 8, 4, 7, 9, 8, 8, 6],
+    };
+    // nav-item(군주) 클릭 시 오버레이 표시 + 대체 버튼 생성
+    document.querySelectorAll('.nav-item').forEach(function(card) {
+        card.addEventListener('click', function(e) {
+            const h3 = card.querySelector('h3');
+            const p = card.querySelector('p');
+            let name = '';
+            if (p && p.innerHTML.includes('<br>')) {
+                name = p.innerHTML.split('<br>')[0];
+            } else if (h3) {
+                name = h3.textContent;
+            }
+            charNameBtn.textContent = name;
+            currentCharName = name;
+            charGraph.innerHTML = '(여기에 능력치 그래프가 표시됩니다)';
+            // 진영별 이름 버튼 색상 적용
+            charNameBtn.classList.remove('sun','liu','etc');
+            if (['손권','주유','노숙'].includes(name)) {
+                charNameBtn.classList.add('sun');
+            } else if (['유비','관우','제갈량'].includes(name)) {
+                charNameBtn.classList.add('liu');
+            } else if (['원소','여포','진궁'].includes(name)) {
+                charNameBtn.classList.add('etc');
+            }
+            // 군주 박스에서 조조 클릭 시만 대체 버튼 보이기
+            if (name === '조조') {
+                charAltBtns.innerHTML = '';
+                ['조조','조비','조예'].forEach(function(nm) {
+                    const btn = document.createElement('button');
+                    btn.className = 'toggle-btn';
+                    btn.style.fontSize = '1em';
+                    btn.style.padding = '10px 24px';
+                    btn.style.borderRadius = '8px';
+                    btn.style.background = (nm === name) ? 'linear-gradient(135deg,#A0522D,#8B4513)' : 'linear-gradient(135deg,#8B4513,#A0522D)';
+                    btn.style.color = '#fff';
+                    btn.style.border = 'none';
+                    btn.style.cursor = 'pointer';
+                    btn.style.boxShadow = '0 2px 8px rgba(0,0,0,0.15)';
+                    btn.style.fontWeight = 'bold';
+                    btn.textContent = nm;
+                    if (nm === name) btn.disabled = true;
+                    btn.addEventListener('click', function(ev) {
+                        ev.stopPropagation();
+                        charNameBtn.textContent = nm;
+                        currentCharName = nm;
+                        charGraph.innerHTML = (nm === '정보') ? '(여기에 인물 정보가 표시됩니다)' : '(여기에 능력치 그래프가 표시됩니다)';
+                        Array.from(charAltBtns.children).forEach(b => {
+                            b.style.background = (b.textContent === nm) ? 'linear-gradient(135deg,#A0522D,#8B4513)' : 'linear-gradient(135deg,#8B4513,#A0522D)';
+                            b.disabled = (b.textContent === nm);
+                        });
+                    });
+                    charAltBtns.appendChild(btn);
+                });
+            } else if (name === '장료') {
+                charAltBtns.innerHTML = '';
+                [
+                    '장료','우금','하후연','하후돈','하후모','무구검','허저','종회','서황','조휴','조홍','조장','조진','조인','조상','장합','진군','전위','등애','방덕','만총','이전',
+                    '낙진','곽회','제갈탄','장수','모개'
+                ].forEach(function(nm) {
+                    const btn = document.createElement('button');
+                    btn.className = 'toggle-btn';
+                    btn.style.fontSize = '1em';
+                    btn.style.padding = '10px 24px';
+                    btn.style.borderRadius = '8px';
+                    btn.style.background = (nm === name) ? 'linear-gradient(135deg,#A0522D,#8B4513)' : 'linear-gradient(135deg,#8B4513,#A0522D)';
+                    btn.style.color = '#fff';
+                    btn.style.border = 'none';
+                    btn.style.cursor = 'pointer';
+                    btn.style.boxShadow = '0 2px 8px rgba(0,0,0,0.15)';
+                    btn.style.fontWeight = 'bold';
+                    btn.textContent = nm;
+                    if (nm === name) btn.disabled = true;
+                    btn.addEventListener('click', function(ev) {
+                        ev.stopPropagation();
+                        charNameBtn.textContent = nm;
+                        currentCharName = nm;
+                        charGraph.innerHTML = '(여기에 능력치 그래프가 표시됩니다)';
+                        Array.from(charAltBtns.children).forEach(b => {
+                            b.style.background = (b.textContent === nm) ? 'linear-gradient(135deg,#A0522D,#8B4513)' : 'linear-gradient(135deg,#8B4513,#A0522D)';
+                            b.disabled = (b.textContent === nm);
+                        });
+                    });
+                    charAltBtns.appendChild(btn);
+                });
+            } else if (name === '곽가') {
+                charAltBtns.innerHTML = '';
+                [
+                    '곽가','가후','가충','관택','허유','사마의','사마사','사마소','순욱','순유','조식','진군','진림','정욱','두예','가규','화흠'
+                ].forEach(function(nm) {
+                    const btn = document.createElement('button');
+                    btn.className = 'toggle-btn';
+                    btn.style.fontSize = '1em';
+                    btn.style.padding = '10px 24px';
+                    btn.style.borderRadius = '8px';
+                    btn.style.background = (nm === name) ? 'linear-gradient(135deg,#A0522D,#8B4513)' : 'linear-gradient(135deg,#8B4513,#A0522D)';
+                    btn.style.color = '#fff';
+                    btn.style.border = 'none';
+                    btn.style.cursor = 'pointer';
+                    btn.style.boxShadow = '0 2px 8px rgba(0,0,0,0.15)';
+                    btn.style.fontWeight = 'bold';
+                    btn.textContent = nm;
+                    if (nm === name) btn.disabled = true;
+                    btn.addEventListener('click', function(ev) {
+                        ev.stopPropagation();
+                        charNameBtn.textContent = nm;
+                        currentCharName = nm;
+                        charGraph.innerHTML = '(여기에 능력치 그래프가 표시됩니다)';
+                        Array.from(charAltBtns.children).forEach(b => {
+                            b.style.background = (b.textContent === nm) ? 'linear-gradient(135deg,#A0522D,#8B4513)' : 'linear-gradient(135deg,#8B4513,#A0522D)';
+                            b.disabled = (b.textContent === nm);
+                        });
+                    });
+                    charAltBtns.appendChild(btn);
+                });
+            } else if (name === '손권') {
+                charAltBtns.innerHTML = '';
+                [
+                    '손권','손책','손호','손견'
+                ].forEach(function(nm) {
+                    const btn = document.createElement('button');
+                    btn.className = 'toggle-btn';
+                    btn.style.fontSize = '1em';
+                    btn.style.padding = '10px 24px';
+                    btn.style.borderRadius = '8px';
+                    btn.style.background = (nm === name) ? 'linear-gradient(135deg,#228B22,#006400)' : 'linear-gradient(135deg,#006400,#228B22)';
+                    btn.style.color = '#fff';
+                    btn.style.border = 'none';
+                    btn.style.cursor = 'pointer';
+                    btn.style.boxShadow = '0 2px 8px rgba(0,0,0,0.15)';
+                    btn.style.fontWeight = 'bold';
+                    btn.textContent = nm;
+                    if (nm === name) btn.disabled = true;
+                    btn.addEventListener('click', function(ev) {
+                        ev.stopPropagation();
+                        charNameBtn.textContent = nm;
+                        currentCharName = nm;
+                        charGraph.innerHTML = '(여기에 능력치 그래프가 표시됩니다)';
+                        Array.from(charAltBtns.children).forEach(b => {
+                            b.style.background = (b.textContent === nm) ? 'linear-gradient(135deg,#228B22,#006400)' : 'linear-gradient(135deg,#006400,#228B22)';
+                            b.disabled = (b.textContent === nm);
+                        });
+                    });
+                    charAltBtns.appendChild(btn);
+                });
+            } else if (name === '주유') {
+                charAltBtns.innerHTML = '';
+                [
+                    '정보','주유','감녕','주태','주준','주연','장흠','손준','태사자','진무','정봉','육강','육손','능통','여몽','황개','고상','제갈각','서성'
+                ].forEach(function(nm) {
+                    const btn = document.createElement('button');
+                    btn.className = 'toggle-btn';
+                    btn.style.fontSize = '1em';
+                    btn.style.padding = '10px 24px';
+                    btn.style.borderRadius = '8px';
+                    btn.style.background = (nm === name) ? 'linear-gradient(135deg,#228B22,#006400)' : 'linear-gradient(135deg,#006400,#228B22)';
+                    btn.style.color = '#fff';
+                    btn.style.border = 'none';
+                    btn.style.cursor = 'pointer';
+                    btn.style.boxShadow = '0 2px 8px rgba(0,0,0,0.15)';
+                    btn.style.fontWeight = 'bold';
+                    btn.textContent = nm;
+                    if (nm === name) btn.disabled = true;
+                    btn.addEventListener('click', function(ev) {
+                        ev.stopPropagation();
+                        charNameBtn.textContent = nm;
+                        currentCharName = nm;
+                        charGraph.innerHTML = (nm === '정보') ? '(여기에 인물 정보가 표시됩니다)' : '(여기에 능력치 그래프가 표시됩니다)';
+                        Array.from(charAltBtns.children).forEach(b => {
+                            b.style.background = (b.textContent === nm) ? 'linear-gradient(135deg,#228B22,#006400)' : 'linear-gradient(135deg,#006400,#228B22)';
+                            b.disabled = (b.textContent === nm);
+                        });
+                    });
+                    charAltBtns.appendChild(btn);
+                });
+            } else if (name === '노숙') {
+                charAltBtns.innerHTML = '';
+                [
+                    '노숙','주태','여몽','고옹','장홍','장소','보지','육개'
+                ].forEach(function(nm) {
+                    const btn = document.createElement('button');
+                    btn.className = 'toggle-btn';
+                    btn.style.fontSize = '1em';
+                    btn.style.padding = '10px 24px';
+                    btn.style.borderRadius = '8px';
+                    btn.style.background = (nm === name) ? 'linear-gradient(135deg,#228B22,#006400)' : 'linear-gradient(135deg,#006400,#228B22)';
+                    btn.style.color = '#fff';
+                    btn.style.border = 'none';
+                    btn.style.cursor = 'pointer';
+                    btn.style.boxShadow = '0 2px 8px rgba(0,0,0,0.15)';
+                    btn.style.fontWeight = 'bold';
+                    btn.textContent = nm;
+                    if (nm === name) btn.disabled = true;
+                    btn.addEventListener('click', function(ev) {
+                        ev.stopPropagation();
+                        charNameBtn.textContent = nm;
+                        currentCharName = nm;
+                        charGraph.innerHTML = '(여기에 능력치 그래프가 표시됩니다)';
+                        Array.from(charAltBtns.children).forEach(b => {
+                            b.style.background = (b.textContent === nm) ? 'linear-gradient(135deg,#228B22,#006400)' : 'linear-gradient(135deg,#006400,#228B22)';
+                            b.disabled = (b.textContent === nm);
+                        });
+                    });
+                    charAltBtns.appendChild(btn);
+                });
+            } else if (name === '유비') {
+                charAltBtns.innerHTML = '';
+                [
+                    '유비','유선'
+                ].forEach(function(nm) {
+                    const btn = document.createElement('button');
+                    btn.className = 'toggle-btn';
+                    btn.style.fontSize = '1em';
+                    btn.style.padding = '10px 24px';
+                    btn.style.borderRadius = '8px';
+                    btn.style.background = (nm === name) ? 'linear-gradient(135deg,#A0522D,#D2691E)' : 'linear-gradient(135deg,#D2691E,#A0522D)';
+                    btn.style.color = '#fff';
+                    btn.style.border = 'none';
+                    btn.style.cursor = 'pointer';
+                    btn.style.boxShadow = '0 2px 8px rgba(0,0,0,0.15)';
+                    btn.style.fontWeight = 'bold';
+                    btn.textContent = nm;
+                    if (nm === name) btn.disabled = true;
+                    btn.addEventListener('click', function(ev) {
+                        ev.stopPropagation();
+                        charNameBtn.textContent = nm;
+                        currentCharName = nm;
+                        charGraph.innerHTML = '(여기에 능력치 그래프가 표시됩니다)';
+                        Array.from(charAltBtns.children).forEach(b => {
+                            b.style.background = (b.textContent === nm) ? 'linear-gradient(135deg,#A0522D,#D2691E)' : 'linear-gradient(135deg,#D2691E,#A0522D)';
+                            b.disabled = (b.textContent === nm);
+                        });
+                    });
+                    charAltBtns.appendChild(btn);
+                });
+            } else if (name === '관우') {
+                charAltBtns.innerHTML = '';
+                [
+                    '관우','장비','조운','마초','황충','위연','강유','관평','관흥','장포','장익','마대','이엄'
+                ].forEach(function(nm) {
+                    const btn = document.createElement('button');
+                    btn.className = 'toggle-btn';
+                    btn.style.fontSize = '1em';
+                    btn.style.padding = '10px 24px';
+                    btn.style.borderRadius = '8px';
+                    btn.style.background = (nm === name) ? 'linear-gradient(135deg,#A0522D,#D2691E)' : 'linear-gradient(135deg,#D2691E,#A0522D)';
+                    btn.style.color = '#fff';
+                    btn.style.border = 'none';
+                    btn.style.cursor = 'pointer';
+                    btn.style.boxShadow = '0 2px 8px rgba(0,0,0,0.15)';
+                    btn.style.fontWeight = 'bold';
+                    btn.textContent = nm;
+                    if (nm === name) btn.disabled = true;
+                    btn.addEventListener('click', function(ev) {
+                        ev.stopPropagation();
+                        charNameBtn.textContent = nm;
+                        currentCharName = nm;
+                        charGraph.innerHTML = '(여기에 능력치 그래프가 표시됩니다)';
+                        Array.from(charAltBtns.children).forEach(b => {
+                            b.style.background = (b.textContent === nm) ? 'linear-gradient(135deg,#A0522D,#D2691E)' : 'linear-gradient(135deg,#D2691E,#A0522D)';
+                            b.disabled = (b.textContent === nm);
+                        });
+                    });
+                    charAltBtns.appendChild(btn);
+                });
+            } else if (name === '제갈량') {
+                charAltBtns.innerHTML = '';
+                [
+                    '제갈량','이적','한숭','간옹','황권','장완','서서','손건','장송','진진','진등','마속','마량','폐의','미축','법정','방통','양의','이회'
+                ].forEach(function(nm) {
+                    const btn = document.createElement('button');
+                    btn.className = 'toggle-btn';
+                    btn.style.fontSize = '1em';
+                    btn.style.padding = '10px 24px';
+                    btn.style.borderRadius = '8px';
+                    btn.style.background = (nm === name) ? 'linear-gradient(135deg,#A0522D,#D2691E)' : 'linear-gradient(135deg,#D2691E,#A0522D)';
+                    btn.style.color = '#fff';
+                    btn.style.border = 'none';
+                    btn.style.cursor = 'pointer';
+                    btn.style.boxShadow = '0 2px 8px rgba(0,0,0,0.15)';
+                    btn.style.fontWeight = 'bold';
+                    btn.textContent = nm;
+                    if (nm === name) btn.disabled = true;
+                    btn.addEventListener('click', function(ev) {
+                        ev.stopPropagation();
+                        charNameBtn.textContent = nm;
+                        currentCharName = nm;
+                        charGraph.innerHTML = '(여기에 능력치 그래프가 표시됩니다)';
+                        Array.from(charAltBtns.children).forEach(b => {
+                            b.style.background = (b.textContent === nm) ? 'linear-gradient(135deg,#A0522D,#D2691E)' : 'linear-gradient(135deg,#D2691E,#A0522D)';
+                            b.disabled = (b.textContent === nm);
+                        });
+                    });
+                    charAltBtns.appendChild(btn);
+                });
+            } else if (name === '원소') {
+                charAltBtns.innerHTML = '';
+                [
+                    '원소','원술','공손찬','유표','장로','마등','공융'
+                ].forEach(function(nm) {
+                    const btn = document.createElement('button');
+                    btn.className = 'toggle-btn';
+                    btn.style.fontSize = '1em';
+                    btn.style.padding = '10px 24px';
+                    btn.style.borderRadius = '8px';
+                    btn.style.background = (nm === name) ? 'linear-gradient(135deg,#4682B4,#708090)' : 'linear-gradient(135deg,#708090,#4682B4)';
+                    btn.style.color = '#fff';
+                    btn.style.border = 'none';
+                    btn.style.cursor = 'pointer';
+                    btn.style.boxShadow = '0 2px 8px rgba(0,0,0,0.15)';
+                    btn.style.fontWeight = 'bold';
+                    btn.textContent = nm;
+                    if (nm === name) btn.disabled = true;
+                    btn.addEventListener('click', function(ev) {
+                        ev.stopPropagation();
+                        charNameBtn.textContent = nm;
+                        currentCharName = nm;
+                        charGraph.innerHTML = '(여기에 능력치 그래프가 표시됩니다)';
+                        Array.from(charAltBtns.children).forEach(b => {
+                            b.style.background = (b.textContent === nm) ? 'linear-gradient(135deg,#4682B4,#708090)' : 'linear-gradient(135deg,#708090,#4682B4)';
+                            b.disabled = (b.textContent === nm);
+                        });
+                    });
+                    charAltBtns.appendChild(btn);
+                });
+            } else if (name === '여포') {
+                charAltBtns.innerHTML = '';
+                [
+                    '여포','왕준','곽사','학소','하진','기령','고순','황조','황보숭','채모','동승','동차나','문추','모개','이각','노식'
+                ].forEach(function(nm) {
+                    const btn = document.createElement('button');
+                    btn.className = 'toggle-btn';
+                    btn.style.fontSize = '1em';
+                    btn.style.padding = '10px 24px';
+                    btn.style.borderRadius = '8px';
+                    btn.style.background = (nm === name) ? 'linear-gradient(135deg,#4682B4,#708090)' : 'linear-gradient(135deg,#708090,#4682B4)';
+                    btn.style.color = '#fff';
+                    btn.style.border = 'none';
+                    btn.style.cursor = 'pointer';
+                    btn.style.boxShadow = '0 2px 8px rgba(0,0,0,0.15)';
+                    btn.style.fontWeight = 'bold';
+                    btn.textContent = nm;
+                    if (nm === name) btn.disabled = true;
+                    btn.addEventListener('click', function(ev) {
+                        ev.stopPropagation();
+                        charNameBtn.textContent = nm;
+                        currentCharName = nm;
+                        charGraph.innerHTML = '(여기에 능력치 그래프가 표시됩니다)';
+                        Array.from(charAltBtns.children).forEach(b => {
+                            b.style.background = (b.textContent === nm) ? 'linear-gradient(135deg,#4682B4,#708090)' : 'linear-gradient(135deg,#708090,#4682B4)';
+                            b.disabled = (b.textContent === nm);
+                        });
+                    });
+                    charAltBtns.appendChild(btn);
+                });
+            } else if (name === '진궁') {
+                charAltBtns.innerHTML = '';
+                [
+                    '진궁','왕윤','왕보','괴월','곽도','사마휘','심배','저수','전풍','이유'
+                ].forEach(function(nm) {
+                    const btn = document.createElement('button');
+                    btn.className = 'toggle-btn';
+                    btn.style.fontSize = '1em';
+                    btn.style.padding = '10px 24px';
+                    btn.style.borderRadius = '8px';
+                    btn.style.background = (nm === name) ? 'linear-gradient(135deg,#4682B4,#708090)' : 'linear-gradient(135deg,#708090,#4682B4)';
+                    btn.style.color = '#fff';
+                    btn.style.border = 'none';
+                    btn.style.cursor = 'pointer';
+                    btn.style.boxShadow = '0 2px 8px rgba(0,0,0,0.15)';
+                    btn.style.fontWeight = 'bold';
+                    btn.textContent = nm;
+                    if (nm === name) btn.disabled = true;
+                    btn.addEventListener('click', function(ev) {
+                        ev.stopPropagation();
+                        charNameBtn.textContent = nm;
+                        currentCharName = nm;
+                        charGraph.innerHTML = '(여기에 능력치 그래프가 표시됩니다)';
+                        Array.from(charAltBtns.children).forEach(b => {
+                            b.style.background = (b.textContent === nm) ? 'linear-gradient(135deg,#4682B4,#708090)' : 'linear-gradient(135deg,#708090,#4682B4)';
+                            b.disabled = (b.textContent === nm);
+                        });
+                    });
+                    charAltBtns.appendChild(btn);
+                });
+            } else {
+                charAltBtns.innerHTML = '';
+            }
+            charOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+    });
+    // 인물 상세 오버레이 닫기(X 버튼, ESC, 바깥 클릭)
+    const charClose = document.getElementById('character-detail-close-btn');
+    charClose.addEventListener('click', function() {
+        charOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+        charAltBtns.innerHTML = '';
+    });
+    charOverlay.addEventListener('click', function(e) {
+        if (e.target === charOverlay) {
+            charOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+            charAltBtns.innerHTML = '';
+        }
+    });
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            charOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+            charAltBtns.innerHTML = '';
         }
     });
 })();
