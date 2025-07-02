@@ -547,12 +547,15 @@
 
         /* === ② 탭 카드를 그리드로 배치 === */
         .nav-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 20px;
-        list-style: none;
-        margin: 0;
-        padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+        .nav-item {
+            margin: 0 auto;
         }
 
         /* === ③ 카드 스타일 === */
@@ -863,6 +866,7 @@
             align-items: center;
             justify-content: flex-start;
             gap: 32px;
+            overflow-y: auto;
         }
         #character-detail-name-btn {
             font-size: 2.2em;
@@ -912,11 +916,19 @@
             outline: none;
         }
         #character-detail-alt-btns .toggle-btn:disabled {
-            background: linear-gradient(135deg,#A0522D,#8B4513);
+            background: linear-gradient(135deg,#eaff00 40%, #00ffd0 100%);
             filter: brightness(1.08);
-            box-shadow: 0 4px 16px rgba(139,69,19,0.18);
+            box-shadow: 0 4px 16px rgba(139,69,19,0.18), 0 0 0 4px #7c3aed, 0 0 16px 4px #b39ddb;
             font-weight: 900;
-            transform: scale(1.04);
+            transform: scale(1.16);
+            border: 3.5px solid #7c3aed;
+            outline: 0;
+            color: #e53935;
+            z-index: 2;
+            font-size: 1.25em;
+            padding: 18px 0;
+            border-radius: 16px;
+            letter-spacing: 1.5px;
         }
         #character-detail-graph {
             width: 60vw !important;
@@ -962,7 +974,7 @@
         <ul class="nav-grid">
             <li>
                 <button class="nav-item active" data-tab="tab1">
-                    <img src="./images/samgukjiperson.png" alt="인물론" onerror="this.onerror=null; this.src='https://placehold.co/400x300/fff/000?text=No+Image';">
+                    <img src="./character/samgukji_character.jpg" alt="인물론" onerror="this.onerror=null; this.src='https://placehold.co/400x300/fff/000?text=No+Image';">
                     <h3>인물론</h3>
                     <p>삼국지 주요 인물들의 성격과 전략을 분석합니다.</p>
                 </button>
@@ -1306,14 +1318,21 @@
             // charGraph.innerHTML = '(여기에 능력치 그래프가 표시됩니다)';
             if (charStatMap[name]) {
                 charGraph.innerHTML = '';
+                let wrapper = charGraph.querySelector('.graph-border-wrapper');
+                if (!wrapper) {
+                    wrapper = document.createElement('div');
+                    wrapper.className = 'graph-border-wrapper';
+                    charGraph.appendChild(wrapper);
+                }
+                wrapper.innerHTML = '';
                 const canvas = document.createElement('canvas');
-                canvas.width = 340; canvas.height = 340;
+                canvas.width = 490; canvas.height = 490;
                 canvas.style.display = 'block';
                 canvas.style.margin = '0 auto 10px auto';
                 canvas.style.background = 'rgba(255,255,255,0.13)';
                 canvas.style.borderRadius = '16px';
                 drawRadarChart(canvas, charStatMap[name], statLabels);
-                charGraph.appendChild(canvas);
+                wrapper.appendChild(canvas);
             } else {
                 charGraph.innerHTML = '(능력치 정보 없음)';
             }
@@ -1336,8 +1355,6 @@
                     btn.style.padding = '10px 24px';
                     btn.style.borderRadius = '8px';
                     btn.style.background = (nm === name) ? 'linear-gradient(135deg,#A0522D,#8B4513)' : 'linear-gradient(135deg,#8B4513,#A0522D)';
-                    btn.style.color = '#fff';
-                    btn.style.border = 'none';
                     btn.style.cursor = 'pointer';
                     btn.style.boxShadow = '0 2px 8px rgba(0,0,0,0.15)';
                     btn.style.fontWeight = 'bold';
@@ -1350,14 +1367,21 @@
                         // charGraph.innerHTML = '(여기에 능력치 그래프가 표시됩니다)';
                         if (charStatMap[nm]) {
                             charGraph.innerHTML = '';
+                            let wrapper = charGraph.querySelector('.graph-border-wrapper');
+                            if (!wrapper) {
+                                wrapper = document.createElement('div');
+                                wrapper.className = 'graph-border-wrapper';
+                                charGraph.appendChild(wrapper);
+                            }
+                            wrapper.innerHTML = '';
                             const canvas = document.createElement('canvas');
-                            canvas.width = 340; canvas.height = 340;
+                            canvas.width = 490; canvas.height = 490;
                             canvas.style.display = 'block';
                             canvas.style.margin = '0 auto 10px auto';
                             canvas.style.background = 'rgba(255,255,255,0.13)';
                             canvas.style.borderRadius = '16px';
                             drawRadarChart(canvas, charStatMap[nm], statLabels);
-                            charGraph.appendChild(canvas);
+                            wrapper.appendChild(canvas);
                         } else {
                             charGraph.innerHTML = '(능력치 정보 없음)';
                         }
@@ -1380,8 +1404,6 @@
                     btn.style.padding = '10px 24px';
                     btn.style.borderRadius = '8px';
                     btn.style.background = (nm === name) ? 'linear-gradient(135deg,#A0522D,#8B4513)' : 'linear-gradient(135deg,#8B4513,#A0522D)';
-                    btn.style.color = '#fff';
-                    btn.style.border = 'none';
                     btn.style.cursor = 'pointer';
                     btn.style.boxShadow = '0 2px 8px rgba(0,0,0,0.15)';
                     btn.style.fontWeight = 'bold';
@@ -1394,14 +1416,21 @@
                         // charGraph.innerHTML = '(여기에 능력치 그래프가 표시됩니다)';
                         if (charStatMap[nm]) {
                             charGraph.innerHTML = '';
+                            let wrapper = charGraph.querySelector('.graph-border-wrapper');
+                            if (!wrapper) {
+                                wrapper = document.createElement('div');
+                                wrapper.className = 'graph-border-wrapper';
+                                charGraph.appendChild(wrapper);
+                            }
+                            wrapper.innerHTML = '';
                             const canvas = document.createElement('canvas');
-                            canvas.width = 340; canvas.height = 340;
+                            canvas.width = 490; canvas.height = 490;
                             canvas.style.display = 'block';
                             canvas.style.margin = '0 auto 10px auto';
                             canvas.style.background = 'rgba(255,255,255,0.13)';
                             canvas.style.borderRadius = '16px';
                             drawRadarChart(canvas, charStatMap[nm], statLabels);
-                            charGraph.appendChild(canvas);
+                            wrapper.appendChild(canvas);
                         } else {
                             charGraph.innerHTML = '(능력치 정보 없음)';
                         }
@@ -1423,8 +1452,6 @@
                     btn.style.padding = '10px 24px';
                     btn.style.borderRadius = '8px';
                     btn.style.background = (nm === name) ? 'linear-gradient(135deg,#A0522D,#8B4513)' : 'linear-gradient(135deg,#8B4513,#A0522D)';
-                    btn.style.color = '#fff';
-                    btn.style.border = 'none';
                     btn.style.cursor = 'pointer';
                     btn.style.boxShadow = '0 2px 8px rgba(0,0,0,0.15)';
                     btn.style.fontWeight = 'bold';
@@ -1437,14 +1464,21 @@
                         // charGraph.innerHTML = '(여기에 능력치 그래프가 표시됩니다)';
                         if (charStatMap[nm]) {
                             charGraph.innerHTML = '';
+                            let wrapper = charGraph.querySelector('.graph-border-wrapper');
+                            if (!wrapper) {
+                                wrapper = document.createElement('div');
+                                wrapper.className = 'graph-border-wrapper';
+                                charGraph.appendChild(wrapper);
+                            }
+                            wrapper.innerHTML = '';
                             const canvas = document.createElement('canvas');
-                            canvas.width = 340; canvas.height = 340;
+                            canvas.width = 490; canvas.height = 490;
                             canvas.style.display = 'block';
                             canvas.style.margin = '0 auto 10px auto';
                             canvas.style.background = 'rgba(255,255,255,0.13)';
                             canvas.style.borderRadius = '16px';
                             drawRadarChart(canvas, charStatMap[nm], statLabels);
-                            charGraph.appendChild(canvas);
+                            wrapper.appendChild(canvas);
                         } else {
                             charGraph.innerHTML = '(능력치 정보 없음)';
                         }
@@ -1466,8 +1500,6 @@
                     btn.style.padding = '10px 24px';
                     btn.style.borderRadius = '8px';
                     btn.style.background = (nm === name) ? 'linear-gradient(135deg,#228B22,#006400)' : 'linear-gradient(135deg,#006400,#228B22)';
-                    btn.style.color = '#fff';
-                    btn.style.border = 'none';
                     btn.style.cursor = 'pointer';
                     btn.style.boxShadow = '0 2px 8px rgba(0,0,0,0.15)';
                     btn.style.fontWeight = 'bold';
@@ -1480,14 +1512,21 @@
                         // charGraph.innerHTML = '(여기에 능력치 그래프가 표시됩니다)';
                         if (charStatMap[nm]) {
                             charGraph.innerHTML = '';
+                            let wrapper = charGraph.querySelector('.graph-border-wrapper');
+                            if (!wrapper) {
+                                wrapper = document.createElement('div');
+                                wrapper.className = 'graph-border-wrapper';
+                                charGraph.appendChild(wrapper);
+                            }
+                            wrapper.innerHTML = '';
                             const canvas = document.createElement('canvas');
-                            canvas.width = 340; canvas.height = 340;
+                            canvas.width = 490; canvas.height = 490;
                             canvas.style.display = 'block';
                             canvas.style.margin = '0 auto 10px auto';
                             canvas.style.background = 'rgba(255,255,255,0.13)';
                             canvas.style.borderRadius = '16px';
                             drawRadarChart(canvas, charStatMap[nm], statLabels);
-                            charGraph.appendChild(canvas);
+                            wrapper.appendChild(canvas);
                         } else {
                             charGraph.innerHTML = '(능력치 정보 없음)';
                         }
@@ -1509,8 +1548,6 @@
                     btn.style.padding = '10px 24px';
                     btn.style.borderRadius = '8px';
                     btn.style.background = (nm === name) ? 'linear-gradient(135deg,#228B22,#006400)' : 'linear-gradient(135deg,#006400,#228B22)';
-                    btn.style.color = '#fff';
-                    btn.style.border = 'none';
                     btn.style.cursor = 'pointer';
                     btn.style.boxShadow = '0 2px 8px rgba(0,0,0,0.15)';
                     btn.style.fontWeight = 'bold';
@@ -1523,14 +1560,21 @@
                         // charGraph.innerHTML = '(여기에 능력치 그래프가 표시됩니다)';
                         if (charStatMap[nm]) {
                             charGraph.innerHTML = '';
+                            let wrapper = charGraph.querySelector('.graph-border-wrapper');
+                            if (!wrapper) {
+                                wrapper = document.createElement('div');
+                                wrapper.className = 'graph-border-wrapper';
+                                charGraph.appendChild(wrapper);
+                            }
+                            wrapper.innerHTML = '';
                             const canvas = document.createElement('canvas');
-                            canvas.width = 340; canvas.height = 340;
+                            canvas.width = 490; canvas.height = 490;
                             canvas.style.display = 'block';
                             canvas.style.margin = '0 auto 10px auto';
                             canvas.style.background = 'rgba(255,255,255,0.13)';
                             canvas.style.borderRadius = '16px';
                             drawRadarChart(canvas, charStatMap[nm], statLabels);
-                            charGraph.appendChild(canvas);
+                            wrapper.appendChild(canvas);
                         } else {
                             charGraph.innerHTML = '(능력치 정보 없음)';
                         }
@@ -1552,8 +1596,6 @@
                     btn.style.padding = '10px 24px';
                     btn.style.borderRadius = '8px';
                     btn.style.background = (nm === name) ? 'linear-gradient(135deg,#228B22,#006400)' : 'linear-gradient(135deg,#006400,#228B22)';
-                    btn.style.color = '#fff';
-                    btn.style.border = 'none';
                     btn.style.cursor = 'pointer';
                     btn.style.boxShadow = '0 2px 8px rgba(0,0,0,0.15)';
                     btn.style.fontWeight = 'bold';
@@ -1566,14 +1608,21 @@
                         // charGraph.innerHTML = '(여기에 능력치 그래프가 표시됩니다)';
                         if (charStatMap[nm]) {
                             charGraph.innerHTML = '';
+                            let wrapper = charGraph.querySelector('.graph-border-wrapper');
+                            if (!wrapper) {
+                                wrapper = document.createElement('div');
+                                wrapper.className = 'graph-border-wrapper';
+                                charGraph.appendChild(wrapper);
+                            }
+                            wrapper.innerHTML = '';
                             const canvas = document.createElement('canvas');
-                            canvas.width = 340; canvas.height = 340;
+                            canvas.width = 490; canvas.height = 490;
                             canvas.style.display = 'block';
                             canvas.style.margin = '0 auto 10px auto';
                             canvas.style.background = 'rgba(255,255,255,0.13)';
                             canvas.style.borderRadius = '16px';
                             drawRadarChart(canvas, charStatMap[nm], statLabels);
-                            charGraph.appendChild(canvas);
+                            wrapper.appendChild(canvas);
                         } else {
                             charGraph.innerHTML = '(능력치 정보 없음)';
                         }
@@ -1595,8 +1644,6 @@
                     btn.style.padding = '10px 24px';
                     btn.style.borderRadius = '8px';
                     btn.style.background = (nm === name) ? 'linear-gradient(135deg,#A0522D,#D2691E)' : 'linear-gradient(135deg,#D2691E,#A0522D)';
-                    btn.style.color = '#fff';
-                    btn.style.border = 'none';
                     btn.style.cursor = 'pointer';
                     btn.style.boxShadow = '0 2px 8px rgba(0,0,0,0.15)';
                     btn.style.fontWeight = 'bold';
@@ -1609,14 +1656,21 @@
                         // charGraph.innerHTML = '(여기에 능력치 그래프가 표시됩니다)';
                         if (charStatMap[nm]) {
                             charGraph.innerHTML = '';
+                            let wrapper = charGraph.querySelector('.graph-border-wrapper');
+                            if (!wrapper) {
+                                wrapper = document.createElement('div');
+                                wrapper.className = 'graph-border-wrapper';
+                                charGraph.appendChild(wrapper);
+                            }
+                            wrapper.innerHTML = '';
                             const canvas = document.createElement('canvas');
-                            canvas.width = 340; canvas.height = 340;
+                            canvas.width = 490; canvas.height = 490;
                             canvas.style.display = 'block';
                             canvas.style.margin = '0 auto 10px auto';
                             canvas.style.background = 'rgba(255,255,255,0.13)';
                             canvas.style.borderRadius = '16px';
                             drawRadarChart(canvas, charStatMap[nm], statLabels);
-                            charGraph.appendChild(canvas);
+                            wrapper.appendChild(canvas);
                         } else {
                             charGraph.innerHTML = '(능력치 정보 없음)';
                         }
@@ -1638,8 +1692,6 @@
                     btn.style.padding = '10px 24px';
                     btn.style.borderRadius = '8px';
                     btn.style.background = (nm === name) ? 'linear-gradient(135deg,#A0522D,#D2691E)' : 'linear-gradient(135deg,#D2691E,#A0522D)';
-                    btn.style.color = '#fff';
-                    btn.style.border = 'none';
                     btn.style.cursor = 'pointer';
                     btn.style.boxShadow = '0 2px 8px rgba(0,0,0,0.15)';
                     btn.style.fontWeight = 'bold';
@@ -1652,14 +1704,21 @@
                         // charGraph.innerHTML = '(여기에 능력치 그래프가 표시됩니다)';
                         if (charStatMap[nm]) {
                             charGraph.innerHTML = '';
+                            let wrapper = charGraph.querySelector('.graph-border-wrapper');
+                            if (!wrapper) {
+                                wrapper = document.createElement('div');
+                                wrapper.className = 'graph-border-wrapper';
+                                charGraph.appendChild(wrapper);
+                            }
+                            wrapper.innerHTML = '';
                             const canvas = document.createElement('canvas');
-                            canvas.width = 340; canvas.height = 340;
+                            canvas.width = 490; canvas.height = 490;
                             canvas.style.display = 'block';
                             canvas.style.margin = '0 auto 10px auto';
                             canvas.style.background = 'rgba(255,255,255,0.13)';
                             canvas.style.borderRadius = '16px';
                             drawRadarChart(canvas, charStatMap[nm], statLabels);
-                            charGraph.appendChild(canvas);
+                            wrapper.appendChild(canvas);
                         } else {
                             charGraph.innerHTML = '(능력치 정보 없음)';
                         }
@@ -1681,8 +1740,6 @@
                     btn.style.padding = '10px 24px';
                     btn.style.borderRadius = '8px';
                     btn.style.background = (nm === name) ? 'linear-gradient(135deg,#A0522D,#D2691E)' : 'linear-gradient(135deg,#D2691E,#A0522D)';
-                    btn.style.color = '#fff';
-                    btn.style.border = 'none';
                     btn.style.cursor = 'pointer';
                     btn.style.boxShadow = '0 2px 8px rgba(0,0,0,0.15)';
                     btn.style.fontWeight = 'bold';
@@ -1695,14 +1752,21 @@
                         // charGraph.innerHTML = '(여기에 능력치 그래프가 표시됩니다)';
                         if (charStatMap[nm]) {
                             charGraph.innerHTML = '';
+                            let wrapper = charGraph.querySelector('.graph-border-wrapper');
+                            if (!wrapper) {
+                                wrapper = document.createElement('div');
+                                wrapper.className = 'graph-border-wrapper';
+                                charGraph.appendChild(wrapper);
+                            }
+                            wrapper.innerHTML = '';
                             const canvas = document.createElement('canvas');
-                            canvas.width = 340; canvas.height = 340;
+                            canvas.width = 490; canvas.height = 490;
                             canvas.style.display = 'block';
                             canvas.style.margin = '0 auto 10px auto';
                             canvas.style.background = 'rgba(255,255,255,0.13)';
                             canvas.style.borderRadius = '16px';
                             drawRadarChart(canvas, charStatMap[nm], statLabels);
-                            charGraph.appendChild(canvas);
+                            wrapper.appendChild(canvas);
                         } else {
                             charGraph.innerHTML = '(능력치 정보 없음)';
                         }
@@ -1724,8 +1788,6 @@
                     btn.style.padding = '10px 24px';
                     btn.style.borderRadius = '8px';
                     btn.style.background = (nm === name) ? 'linear-gradient(135deg,#4682B4,#708090)' : 'linear-gradient(135deg,#708090,#4682B4)';
-                    btn.style.color = '#fff';
-                    btn.style.border = 'none';
                     btn.style.cursor = 'pointer';
                     btn.style.boxShadow = '0 2px 8px rgba(0,0,0,0.15)';
                     btn.style.fontWeight = 'bold';
@@ -1738,14 +1800,21 @@
                         // charGraph.innerHTML = '(여기에 능력치 그래프가 표시됩니다)';
                         if (charStatMap[nm]) {
                             charGraph.innerHTML = '';
+                            let wrapper = charGraph.querySelector('.graph-border-wrapper');
+                            if (!wrapper) {
+                                wrapper = document.createElement('div');
+                                wrapper.className = 'graph-border-wrapper';
+                                charGraph.appendChild(wrapper);
+                            }
+                            wrapper.innerHTML = '';
                             const canvas = document.createElement('canvas');
-                            canvas.width = 340; canvas.height = 340;
+                            canvas.width = 490; canvas.height = 490;
                             canvas.style.display = 'block';
                             canvas.style.margin = '0 auto 10px auto';
                             canvas.style.background = 'rgba(255,255,255,0.13)';
                             canvas.style.borderRadius = '16px';
                             drawRadarChart(canvas, charStatMap[nm], statLabels);
-                            charGraph.appendChild(canvas);
+                            wrapper.appendChild(canvas);
                         } else {
                             charGraph.innerHTML = '(능력치 정보 없음)';
                         }
@@ -1767,8 +1836,6 @@
                     btn.style.padding = '10px 24px';
                     btn.style.borderRadius = '8px';
                     btn.style.background = (nm === name) ? 'linear-gradient(135deg,#4682B4,#708090)' : 'linear-gradient(135deg,#708090,#4682B4)';
-                    btn.style.color = '#fff';
-                    btn.style.border = 'none';
                     btn.style.cursor = 'pointer';
                     btn.style.boxShadow = '0 2px 8px rgba(0,0,0,0.15)';
                     btn.style.fontWeight = 'bold';
@@ -1781,14 +1848,21 @@
                         // charGraph.innerHTML = '(여기에 능력치 그래프가 표시됩니다)';
                         if (charStatMap[nm]) {
                             charGraph.innerHTML = '';
+                            let wrapper = charGraph.querySelector('.graph-border-wrapper');
+                            if (!wrapper) {
+                                wrapper = document.createElement('div');
+                                wrapper.className = 'graph-border-wrapper';
+                                charGraph.appendChild(wrapper);
+                            }
+                            wrapper.innerHTML = '';
                             const canvas = document.createElement('canvas');
-                            canvas.width = 340; canvas.height = 340;
+                            canvas.width = 490; canvas.height = 490;
                             canvas.style.display = 'block';
                             canvas.style.margin = '0 auto 10px auto';
                             canvas.style.background = 'rgba(255,255,255,0.13)';
                             canvas.style.borderRadius = '16px';
                             drawRadarChart(canvas, charStatMap[nm], statLabels);
-                            charGraph.appendChild(canvas);
+                            wrapper.appendChild(canvas);
                         } else {
                             charGraph.innerHTML = '(능력치 정보 없음)';
                         }
@@ -1810,8 +1884,6 @@
                     btn.style.padding = '10px 24px';
                     btn.style.borderRadius = '8px';
                     btn.style.background = (nm === name) ? 'linear-gradient(135deg,#4682B4,#708090)' : 'linear-gradient(135deg,#708090,#4682B4)';
-                    btn.style.color = '#fff';
-                    btn.style.border = 'none';
                     btn.style.cursor = 'pointer';
                     btn.style.boxShadow = '0 2px 8px rgba(0,0,0,0.15)';
                     btn.style.fontWeight = 'bold';
@@ -1824,14 +1896,21 @@
                         // charGraph.innerHTML = '(여기에 능력치 그래프가 표시됩니다)';
                         if (charStatMap[nm]) {
                             charGraph.innerHTML = '';
+                            let wrapper = charGraph.querySelector('.graph-border-wrapper');
+                            if (!wrapper) {
+                                wrapper = document.createElement('div');
+                                wrapper.className = 'graph-border-wrapper';
+                                charGraph.appendChild(wrapper);
+                            }
+                            wrapper.innerHTML = '';
                             const canvas = document.createElement('canvas');
-                            canvas.width = 340; canvas.height = 340;
+                            canvas.width = 490; canvas.height = 490;
                             canvas.style.display = 'block';
                             canvas.style.margin = '0 auto 10px auto';
                             canvas.style.background = 'rgba(255,255,255,0.13)';
                             canvas.style.borderRadius = '16px';
                             drawRadarChart(canvas, charStatMap[nm], statLabels);
-                            charGraph.appendChild(canvas);
+                            wrapper.appendChild(canvas);
                         } else {
                             charGraph.innerHTML = '(능력치 정보 없음)';
                         }
@@ -2075,8 +2154,8 @@
         ctx.textBaseline = 'middle';
         for(let i=0;i<N;i++){
             const angle = -Math.PI/2 + i*2*Math.PI/N;
-            const x = cx + Math.cos(angle)*(r+32);
-            const y = cy + Math.sin(angle)*(r+32);
+            const x = cx + Math.cos(angle)*(r+30);
+            const y = cy + Math.sin(angle)*(r+30);
             ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(cx+Math.cos(angle)*r,cy+Math.sin(angle)*r); ctx.strokeStyle='#aaa'; ctx.lineWidth=1.2; ctx.stroke();
             ctx.fillStyle = '#444';
             ctx.fillText(labels[i], x, y);
