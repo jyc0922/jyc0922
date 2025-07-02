@@ -3,7 +3,7 @@
 
 ---
 
-# 📌 프로젝트명: [반응형 이력서 / To-Do App / 날씨 대시보드 / 로그인 API / 서버리스 설문기 등]
+# 📌 프로젝트명: [사이트 디자인 등]
 
 > 이 프로젝트는 [과목명: HTML/CSS, React, Node.js 등] 수업에서 진행된 Small Project입니다.  
 > 기초 개념 적용과 실습을 통해 기술 습득을 목표로 하였습니다.
@@ -12,8 +12,8 @@
 
 ## 📆 프로젝트 기간
 
-- 시작일: YYYY.MM.DD
-- 종료일: YYYY.MM.DD
+- 시작일: 2025.06.9
+- 종료일: 2025.06.29
 
 ---
 
@@ -28,11 +28,11 @@
 
 ## ⚙️ 사용 기술 스택
 
-| 분류     | 기술명                            |
-|--------|----------------------------------|
+| 분류       | 기술명                                      |
+| ---------- | ------------------------------------------- |
 | 프론트엔드 | HTML, CSS, JavaScript, TypeScript, React 등 |
-| 백엔드   | Node.js, Express, AWS Lambda 등       |
-| 기타     | Git, GitHub, Postman, Vercel 등        |
+| 백엔드     | Node.js, Express, AWS Lambda 등             |
+| 기타       | Git, GitHub, Postman, Vercel 등             |
 
 ---
 
@@ -53,46 +53,46 @@
 
 ### ✨ 기능 1: \[예: 사용자 입력을 받아 데이터 출력]
 
-* `prompt`, `input`, `form`을 활용하여 인터랙션 구현
+- `prompt`, `input`, `form`을 활용하여 인터랙션 구현
 
 ### 🌦️ 기능 2: \[예: 외부 API 연동]
 
-* OpenWeatherMap / Kakao API 등 활용
-* Fetch / Axios 등으로 비동기 통신 구현
+- OpenWeatherMap / Kakao API 등 활용
+- Fetch / Axios 등으로 비동기 통신 구현
 
 ### 🔐 기능 3: \[예: 사용자 인증 처리]
 
-* JWT 토큰 발급 및 검증
-* 로그인 상태 저장 (localStorage 등)
+- JWT 토큰 발급 및 검증
+- 로그인 상태 저장 (localStorage 등)
 
 ---
 
 ## 🖼️ 데모 화면
 
-| 주요 화면 | 캡처 예시                      |
-| ----- | -------------------------- |
-| 홈 화면  | ![home](./assets/home.png) |
+| 주요 화면 | 캡처 예시                  |
+| --------- | -------------------------- |
+| 홈 화면   | ![home](./assets/home.png) |
 | 기능 예시 | ![demo](./assets/demo.gif) |
 
 ---
 
 ## 🧠 회고 요약
 
-* 어려웠던 점: \[ex. API 연동 시 CORS 오류가 발생해 해결 과정을 공부하게 됨]
-* 배운 점: \[ex. 비동기 흐름의 구조적 이해, 상태 관리를 리팩터링하는 요령]
-* 개선하고 싶은 점: \[ex. UI 디자인을 좀 더 일관되게 구성하고 싶음]
+- 어려웠던 점: \[ex. API 연동 시 CORS 오류가 발생해 해결 과정을 공부하게 됨]
+- 배운 점: \[ex. 비동기 흐름의 구조적 이해, 상태 관리를 리팩터링하는 요령]
+- 개선하고 싶은 점: \[ex. UI 디자인을 좀 더 일관되게 구성하고 싶음]
 
 ---
 
 ## 📦 배포 주소 (선택)
 
-* Vercel / Netlify / AWS S3 등
-* `https://your-project.vercel.app`
+- Vercel / Netlify / AWS S3 등
+- `https://your-project.vercel.app`
 
 ---
 
 ## 🙋‍♀️ 개발자
 
-| 이름  | GitHub                                           |
-| --- | ------------------------------------------------ |
+| 이름   | GitHub                                           |
+| ------ | ------------------------------------------------ |
 | 홍길동 | [github.com/hongdev](https://github.com/hongdev) |
