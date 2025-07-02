@@ -95,4 +95,4 @@
 
 | 이름   | GitHub                                           |
 | ------ | ------------------------------------------------ |
-| 홍길동 | [github.com/hongdev](https://github.com/hongdev) |
+| 김우성 | [github.com/jyc0922](https://github.com/jyc0922) |
