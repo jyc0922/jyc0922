@@ -32,7 +32,7 @@
 
    > ✅ MVVM은 바인딩 기능이 강력한 프레임워크에서 효과적이며, ViewModel 중심의 구조로 확장성과 자동화가 뛰어납니다.
 
-   - **동작 흐름:**사용자 입력 <-> View <-> ViewModel <-> Model
+   - **동작 흐름:** 사용자 입력 <-> View <-> ViewModel <-> Model
 
    🧩**예시: (WPF)** View가 ViewModel의 속성에 바인딩 -> ViewModel이 Model과 통신 -> ViewModel 속성이 변경되면 View 자동 갱신
 
