@@ -10,7 +10,9 @@
 
    - **동작 흐름:** 사용자 입력 -> Controller -> Model 업데이트 -> View에 반영
 
-   🧩**예시: (웹)** 사용자가 로그인 폼 입력 -> Controller가 요청 처리 -> Model에서 사용자 인증 -> View에 결과 반영
+   🧩**예시: (웹)**
+
+   > 사용자가 로그인 폼 입력 -> Controller가 요청 처리 -> Model에서 사용자 인증 -> View에 결과 반영
 
    - **Model:** 데이터 및 비즈니스 로직
    - **View:** 사용자에게 보여지는 UI
@@ -22,7 +24,9 @@
 
    - **동작 흐름:** 사용자 입력 -> View -> Presenter -> Model -> Presenter -> View 업데이트
 
-   🧩**예시: (Android 초기 버전)** Activity (View 역할) -> Presenter에게 이벤트 전달 -> Presenter가 Model로부터 데이터 받고 -> View 인터페이스를 통해 화면 갱신
+   🧩**예시: (Android 초기 버전)**
+
+   > Activity (View 역할) -> Presenter에게 이벤트 전달 -> Presenter가 Model로부터 데이터 받고 -> View 인터페이스를 통해 화면 갱신
 
    - **Model:** 데이터 및 비즈니스 로직
    - **View:** 사용자에게 보여지는 UI (인터페이스 기반)
@@ -34,7 +38,9 @@
 
    - **동작 흐름:** 사용자 입력 <-> View <-> ViewModel <-> Model
 
-   🧩**예시: (WPF)** View가 ViewModel의 속성에 바인딩 -> ViewModel이 Model과 통신 -> ViewModel 속성이 변경되면 View 자동 갱신
+   🧩**예시: (WPF)**
+
+   > View가 ViewModel의 속성에 바인딩 -> ViewModel이 Model과 통신 -> ViewModel 속성이 변경되면 View 자동 갱신
 
    - **Model:** 데이터 및 비즈니스 로직
    - **View:** 사용자에게 보여지는 UI
