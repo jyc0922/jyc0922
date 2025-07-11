@@ -40,9 +40,8 @@
    - **View:** 사용자에게 보여지는 UI
    - **ViewModel:** View를 위한 데이터와 로직을 관리, 데이터 바인딩을 통해 View와 동기화
 
-🔹 MVC, MVP, MVVM 구조 비교
+🔹 **MVC**, **MVP**, **MVVM** 구조 비교
 |항목 |**MVC** |**MVP** |**MVVM** |
-|-----| |MVP |MVVM |
 |--------|--------|--------|--------|
 |**주요목적** |로직과 UI분리|View 제어의 명확한 분리|데이터 바인딩을 통한 UI 자동화|
 |**View <-> Model 직접 연결**|Controller 없이도 가능|Presenter만 연결 가능|ViewModel 통해 바인딩|
