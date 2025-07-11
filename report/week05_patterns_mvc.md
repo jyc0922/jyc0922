@@ -2,9 +2,9 @@
 
 ### MVC, MVP, MVVM 패턴의 구조와 특징
 
-> 💡 MVC, MVP, MVVM은 모두 소프트웨서 아키택처 디자인 패턴으로, UI와 로직을 분리하여 유지보수성과 테스트 용이성을 높이기 위한 구조입니다.
+> 💡 **MVC**, **MVP**, **MVVM** 은 모두 소프트웨서 아키택처 디자인 패턴으로, UI와 로직을 분리하여 유지보수성과 테스트 용이성을 높이기 위한 구조입니다.
 
-1. MVC (Model-View-Controller)
+1. **MVC** (Model-View-Controller)
 
    > ✅ MVC는 구조가 간단하지만 View와 Model이 서로 직접 참조할 수 있어 유지보수가 어렵습니다.
 
@@ -18,7 +18,7 @@
    - **View:** 사용자에게 보여지는 UI
    - **Controller:** 사용자의 입력을 받아 처리하고, Model과 View를 연결
 
-2. MVP (Model-View-Presenter)
+2. **MVP** (Model-View-Presenter)
 
    > ✅ View와 Presenter의 명확한 역할 분리로 테스트와 유지보수가 용이합니다.
 
@@ -32,7 +32,7 @@
    - **View:** 사용자에게 보여지는 UI (인터페이스 기반)
    - **Presenter:** View와 Model 간의 중개자 역할. View와의 모든 통신을 담당
 
-3. MVVM (Model-View-ViewModel)
+3. **MVVM** (Model-View-ViewModel)
 
    > ✅ MVVM은 바인딩 기능이 강력한 프레임워크에서 효과적이며, ViewModel 중심의 구조로 확장성과 자동화가 뛰어납니다.
 
