@@ -1,10 +1,17 @@
-import { Title } from "../components";
+import { Title, Div } from "../components"
 
-export default function CopyMe() {
+export default function HeightTest() {
     return (
-        <section className="mt-4">
-            <Title>Copy Me</Title>
-            <div className="mt-4"></div>
-        </section>
+    <section className="mt-4">
+        <Title>HeightTest</Title>
+        <Div className="mt-4 text-center bg-blue-500 h-80">
+            <Div className="bg-blue-500 h-1/2">
+                <p className="text-center text-red-50">h-1/2</p>
+            </Div>
+            <Div className="h-40 bg-red-500">
+                <p className="text-center text-red-50">h-1/2</p>
+            </Div>
+        </Div>
+    </section>
     )
 }

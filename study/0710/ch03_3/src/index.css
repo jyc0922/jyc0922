@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-.material-icons {
+.Material {
   font-family: "Material Icons";
   display: inline-block;
 }

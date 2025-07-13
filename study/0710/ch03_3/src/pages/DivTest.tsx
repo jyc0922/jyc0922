@@ -1,4 +1,4 @@
-import { Title, Subtitle, Div, Icon } from "../components";
+import { Title, Subtitle, Div, Icon } from "../components"
 
 export default function DivTest() {
     return (

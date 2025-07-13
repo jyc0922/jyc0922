@@ -1,10 +1,9 @@
-import { Title } from "../components";
+import { Title } from "../components"
 
-export default function CopyMe() {
+export default function ViewportTest() {
     return (
-        <section className="mt-4">
-            <Title>Copy Me</Title>
-            <div className="mt-4"></div>
-        </section>
+    <section className="w-screen h-screen mt-4 bg-indigo-900">
+        <Title className="text-white">ViewportTest</Title>
+    </section>
     )
 }

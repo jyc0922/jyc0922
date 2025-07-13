@@ -1,11 +1,13 @@
-import './App.css';
-// import Tailwindcss from './pages/Tailwindcss';
-import TextsTest from './pages/TextsTest';
+import Tailwindcss from './pages/Tailwindcss'
+import Color from './pages/Color'
+import TextsTest from './pages/TextsTest'
 
 export default function App() {
   return (
-    <div>
-      <TextsTest />      
+    <div>     
+      <TextsTest />
+      <Color />
+      <Tailwindcss />
     </div>
-  );
+  )
 }
