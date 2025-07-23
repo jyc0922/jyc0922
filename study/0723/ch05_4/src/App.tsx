@@ -8,6 +8,10 @@ export default function App() {
   const store = useStore()
   return (
     // todo
-    
+    <ReduxProvider store={store}>
+      <DndProvider backend={HTML5Backend}>
+        <Board />
+      </DndProvider>
+    </ReduxProvider>
   )
 }

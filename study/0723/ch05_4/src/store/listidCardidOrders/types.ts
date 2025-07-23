@@ -1,5 +1,6 @@
 import type {Action} from 'redux'
 import * as CT from '../commonTypes'
+export * from '../commonTypes'
 
 export type State = Record<CT.UUID, CT.UUID[]>
 
