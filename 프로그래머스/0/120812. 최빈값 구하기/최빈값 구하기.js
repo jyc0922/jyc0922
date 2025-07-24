@@ -1,15 +1,26 @@
 function solution(array) {
     var answer = 0;
-    const frequency = {};
-    for (let num of array) {
-        frequency[num] = (frequency[num] || 0) + 1;
-    }    
-    const maxFreq = Math.max(...Object.values(frequency));
-    const modes = Object.keys(frequency).filter(key => frequency[key] === maxFreq);
-    answer = parseInt(modes[0]);
     
-    if (modes.length > 1) {
-        return -1;
-    }
+    let { mode, isMultipleModes } = array.reduce(
+        (acc, num) => {
+            acc.frequencies[num] = (acc.frequencies[num] || 0) + 1;
+            const currentFreq = acc.frequencies[num]; 
+
+            if (currentFreq > acc.maxFreq) {
+                acc.maxFreq = currentFreq;     
+                acc.mode = num;                
+                acc.isMultipleModes = false;   
+            }
+            else if (currentFreq === acc.maxFreq) {
+                acc.isMultipleModes = true;    
+            }
+
+            return acc;
+        },
+        { frequencies: {}, maxFreq: 0, mode: -1, isMultipleModes: false }
+    );
+
+    answer =  isMultipleModes ? -1 : mode;
+    
     return answer;
 }
