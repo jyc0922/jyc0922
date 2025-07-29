@@ -1,0 +1,72 @@
+/*
+  CallToActionSection 컴포넌트에만 적용되는 스타일입니다.
+*/
+.callToAction {
+  background: linear-gradient(
+    90deg,
+    var(--deep-green) 60%,
+    var(--dark-blue) 100%
+  );
+  color: var(--gold);
+  padding: 4em 20px;
+  text-align: center;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.callToAction h2 {
+  color: var(--gold);
+  font-size: 2.2em;
+  margin-bottom: 1em;
+  font-family: "Playfair Display", serif; /* h2 폰트 스타일 유지 */
+  display: inline-block; /* border-bottom을 위해 */
+  border-bottom: 4px solid var(--gold); /* h2 스타일 유지 */
+  padding-bottom: 6px; /* h2 스타일 유지 */
+}
+
+.callToAction p {
+  font-size: 1.2em; /* 텍스트 크기 조정 */
+  margin-bottom: 2em;
+  color: var(--text-light); /* 텍스트 색상 조정 */
+}
+
+.btn {
+  background: var(--gold);
+  color: var(--dark-blue);
+  padding: 15px 36px;
+  border-radius: 6px;
+  font-size: 1.2em;
+  font-weight: 700;
+  text-decoration: none;
+  border: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: background 0.3s, color 0.3s, transform 0.2s;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background: var(--cyan);
+  color: var(--gold);
+  transform: translateY(-2px);
+}
+
+/* 미디어 쿼리 */
+@media (max-width: 768px) {
+  .callToAction {
+    padding: 2.5em 10px;
+  }
+  .callToAction h2 {
+    font-size: 1.8em;
+  }
+  .callToAction p {
+    font-size: 1em;
+  }
+  .btn {
+    padding: 12px 24px;
+    font-size: 1em;
+  }
+}

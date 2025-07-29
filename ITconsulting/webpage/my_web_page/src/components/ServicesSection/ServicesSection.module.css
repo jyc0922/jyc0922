@@ -1,0 +1,79 @@
+/*
+  ServicesSection 컴포넌트에만 적용되는 스타일입니다.
+*/
+.section {
+  padding: 5em 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.section h2 {
+  font-family: "Playfair Display", serif;
+  font-size: 2.5em;
+  color: var(--cyan);
+  margin-bottom: 1em;
+  display: inline-block;
+  border-bottom: 4px solid var(--gold);
+  padding-bottom: 6px;
+}
+
+.sectionContent {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 32px;
+  margin-top: 3em;
+}
+
+.serviceCard {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 50, 77, 0.08);
+  padding: 40px 32px;
+  flex: 1 1 320px; /* flex-basis를 320px로 설정하여 반응형 레이아웃 */
+  min-width: 280px;
+  text-align: left;
+  border-top: 6px solid var(--cyan);
+  transition: transform 0.3s, box-shadow 0.3s, border-top 0.3s;
+  position: relative;
+}
+
+.serviceCard:hover {
+  transform: translateY(-10px) scale(1.03);
+  box-shadow: 0 16px 32px rgba(0, 50, 77, 0.16);
+  border-top: 6px solid var(--gold);
+}
+
+.serviceCard svg {
+  /* FontAwesomeIcon은 SVG로 렌더링되므로 svg 태그 선택 */
+  font-size: 2.5em;
+  color: var(--deep-green);
+  margin-bottom: 18px;
+}
+
+.serviceCard h3 {
+  font-family: "Playfair Display", serif;
+  font-size: 1.5em;
+  color: var(--dark-blue);
+  margin-bottom: 12px;
+}
+
+.serviceCard p {
+  font-size: 1.1em;
+  color: var(--deep-green);
+}
+
+/* 미디어 쿼리 */
+@media (max-width: 768px) {
+  .section {
+    padding: 2.5em 10px;
+  }
+  .section h2 {
+    font-size: 1.3em;
+  }
+  .serviceCard {
+    padding: 24px 12px;
+    flex: 1 1 100%;
+  } /* 모바일에서 카드 전체 너비 사용 */
+}

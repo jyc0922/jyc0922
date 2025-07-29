@@ -1,7 +1,6 @@
-import { data } from "react-router-dom";
 import { getServerUrl } from "./getServerUrl";
 
-const postAndPut = (methodName: string) => (path: string, body: object) => {
+const postAndPut = (methodName: string) => (path: string, data: object) => {
   return fetch(getServerUrl(path), {
     method: methodName,
     headers: {

@@ -1,0 +1,176 @@
+/*
+  Header 컴포넌트에만 적용되는 스타일입니다.
+  CSS Modules를 사용하므로 클래스 이름 충돌 걱정 없이 작성할 수 있습니다.
+*/
+.header {
+  background: linear-gradient(
+    90deg,
+    var(--dark-blue) 60%,
+    var(--deep-green) 100%
+  );
+  color: var(--text-light);
+  box-shadow: 0 4px 16px var(--shadow-medium); /* variables.css 변수 사용 */
+  position: fixed; /* 헤더 고정 */
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 80px; /* 헤더 높이 설정 */
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: inherit; /* 부모 요소의 색상 상속 */
+}
+
+.logoImage {
+  height: 48px;
+  width: 48px;
+  margin-right: 14px;
+  border-radius: 10px;
+  background: var(--silver-gray);
+  box-shadow: 0 2px 8px var(--shadow-light);
+}
+
+.logoTitle {
+  font-family: "Playfair Display", serif;
+  font-size: 2em;
+  font-weight: 700;
+  color: var(--gold);
+  letter-spacing: 1px;
+}
+
+.logoSub {
+  font-size: 1em;
+  color: var(--silver-gray);
+  margin-left: 8px;
+  font-weight: 400;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+}
+
+.navList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+.navList li {
+  margin-left: 32px;
+}
+
+.navLink {
+  color: var(--text-light);
+  text-decoration: none;
+  font-size: 1.1em;
+  font-weight: 500;
+  padding-bottom: 4px;
+  border-bottom: 2px solid transparent;
+  transition: color 0.3s, border-bottom 0.3s;
+}
+
+.navLink:hover,
+.navLink.active {
+  /* active 클래스 추가 */
+  color: var(--gold);
+  border-bottom: 2px solid var(--gold);
+}
+
+.menuToggle {
+  display: none; /* 기본적으로 숨김 (데스크톱) */
+  background: none;
+  border: none;
+  color: var(--text-light);
+  font-size: 1.8em;
+  cursor: pointer;
+}
+
+/* 미디어 쿼리 (모바일 반응형) */
+@media (max-width: 992px) {
+  .container {
+    flex-direction: column;
+    justify-content: center;
+    height: auto;
+    padding: 15px 24px;
+    align-items: flex-start; /* 모바일에서 로고 왼쪽 정렬 */
+    position: relative; /* 햄버거 메뉴 위치를 위해 */
+  }
+
+  .logo {
+    margin-bottom: 0; /* 모바일에서 로고 하단 마진 제거 */
+  }
+
+  .nav {
+    position: absolute;
+    top: 80px; /* 헤더 높이 아래로 */
+    left: 0;
+    width: 100%;
+    background: var(--dark-blue);
+    flex-direction: column;
+    padding: 20px 0;
+    box-shadow: 0 8px 16px var(--shadow-medium);
+    transform: translateY(-100%); /* 기본적으로 숨김 */
+    transition: transform 0.3s ease-out;
+  }
+
+  .nav.navOpen {
+    transform: translateY(0); /* 메뉴 열림 */
+  }
+
+  .navList {
+    flex-direction: column;
+    width: 100%;
+    text-align: center;
+  }
+
+  .navList li {
+    margin: 10px 0;
+  }
+
+  .navLink {
+    display: block;
+    padding: 10px 0;
+  }
+
+  .menuToggle {
+    display: block; /* 모바일에서 햄버거 메뉴 보임 */
+    position: absolute;
+    right: 24px;
+    top: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 10px 15px;
+  }
+  .logoTitle {
+    font-size: 1.8em;
+  }
+  .logoSub {
+    font-size: 0.9em;
+  }
+  .menuToggle {
+    font-size: 1.5em;
+    right: 15px;
+    top: 15px;
+  }
+  .nav {
+    top: 60px; /* 모바일 헤더 높이에 맞게 조정 */
+  }
+}

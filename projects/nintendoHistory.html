@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>대화형 닌텐도 콘솔 역사</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Nostalgic Tech Harmony -->
+    <!-- Application Structure Plan: The application is designed as an interactive timeline dashboard. The primary navigation is a horizontal timeline allowing users to jump to chronological eras (80s, 90s, etc.). This non-linear access is more user-friendly than a simple long scroll. Below the narrative timeline, a powerful "Comparison Dashboard" section allows users to select multiple consoles via checkboxes. This action dynamically updates bar charts comparing sales and key specs (RAM), transforming the static report data into an analytical tool. This structure was chosen to serve two user goals: chronological exploration and direct, multi-variable comparison, which provides deeper insights than the original report format. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: Console Sales Data -> Goal: Compare -> Viz: Bar Chart (Chart.js) -> Interaction: Users select consoles via checkboxes to dynamically update the chart, allowing direct comparison of commercial success.
+        - Report Info: Console RAM Data -> Goal: Compare/Show Change -> Viz: Bar Chart (Chart.js) -> Interaction: Checkbox selection updates the chart to show the evolution of memory capacity, illustrating technological leaps.
+        - Report Info: Console Technical Specs -> Goal: Inform/Organize -> Viz: HTML Table -> Interaction: Cleanly organized within each console's section for easy reference.
+        - Report Info: Key Innovations -> Goal: Inform/Highlight -> Viz: HTML/CSS with Unicode Icons (e.g., 🎮, 🕹️) -> Interaction: Static but visually engaging way to highlight key features without images.
+        - Justification: This multi-faceted approach combines narrative sections with an interactive data dashboard. It allows users to both learn the history and analyze the data themselves, offering a richer experience. Chart.js was chosen for its responsiveness and ease of dynamic updates.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #F3F4F6; /* Warm Gray 100 */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 400px;
+            max-height: 50vh;
+        }
+        .era-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .era-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .nav-link {
+            transition: color 0.3s, border-bottom-color 0.3s;
+        }
+        .nav-link:hover {
+            color: #E53E3E; /* Red 600 */
+        }
+        .active-link {
+            color: #E53E3E;
+            border-bottom-color: #E53E3E;
+        }
+        .checkbox-label {
+            transition: background-color 0.2s;
+        }
+        .checkbox-label:hover {
+            background-color: #E2E8F0; /* Gray 200 */
+        }
+        input:checked + .checkbox-label {
+            background-color: #E53E3E;
+            color: white;
+            border-color: #C53030;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <header class="sticky top-0 z-50 shadow-md bg-white/80 backdrop-blur-lg">
+        <nav class="container flex items-center justify-between px-6 py-3 mx-auto">
+            <h1 class="text-2xl font-bold text-gray-800">🎮 닌텐도 연대기</h1>
+            <div class="hidden space-x-8 md:flex">
+                <a href="#introduction" class="pb-1 text-gray-600 border-b-2 border-transparent nav-link">소개</a>
+                <a href="#timeline" class="pb-1 text-gray-600 border-b-2 border-transparent nav-link">연대기</a>
+                <a href="#comparison" class="pb-1 text-gray-600 border-b-2 border-transparent nav-link">사양 비교</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container p-4 mx-auto md:p-8">
+        <section id="introduction" class="my-12 text-center">
+            <h2 class="mb-4 text-4xl font-bold">닌텐도 게임기: 혁신의 역사</h2>
+            <p class="max-w-3xl mx-auto text-lg text-gray-600">
+                1980년대부터 현재까지, 닌텐도는 단순한 성능 경쟁을 넘어 독창적인 아이디어와 새로운 플레이 방식으로 게임 산업을 이끌어왔습니다. 이 대화형 연대기는 닌텐도의 주요 콘솔들의 역사, 사양, 그리고 그들이 남긴 영향을 탐색할 수 있도록 제작되었습니다. 타임라인을 통해 각 시대를 여행하거나, 비교 대시보드에서 직접 콘솔들의 데이터를 분석해보세요.
+            </p>
+        </section>
+
+        <section id="timeline" class="my-16">
+            <h2 class="mb-10 text-3xl font-bold text-center">콘솔 연대기</h2>
+            <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
+                <a href="#era-1980" class="block p-6 text-center bg-white rounded-lg shadow-lg era-card">
+                    <div class="mb-4 text-5xl">🕹️</div>
+                    <h3 class="text-2xl font-bold">1980년대</h3>
+                    <p class="text-gray-500">디지털 플레이의 여명</p>
+                </a>
+                <a href="#era-1990" class="block p-6 text-center bg-white rounded-lg shadow-lg era-card">
+                    <div class="mb-4 text-5xl">🚀</div>
+                    <h3 class="text-2xl font-bold">1990년대</h3>
+                    <p class="text-gray-500">새로운 차원의 부상</p>
+                </a>
+                <a href="#era-2000" class="block p-6 text-center bg-white rounded-lg shadow-lg era-card">
+                    <div class="mb-4 text-5xl">🌍</div>
+                    <h3 class="text-2xl font-bold">2000년대</h3>
+                    <p class="text-gray-500">상호작용의 재정의</p>
+                </a>
+                <a href="#era-2010" class="block p-6 text-center bg-white rounded-lg shadow-lg era-card">
+                    <div class="mb-4 text-5xl">✨</div>
+                    <h3 class="text-2xl font-bold">2010년대-현재</h3>
+                    <p class="text-gray-500">하이브리드의 시대</p>
+                </a>
+            </div>
+        </section>
+
+        <div id="console-details">
+            <!-- Console details will be injected here by JavaScript -->
+        </div>
+        
+        <section id="comparison" class="pt-10 my-20">
+            <div class="p-6 bg-white shadow-2xl md:p-8 rounded-2xl">
+                <h2 class="mb-2 text-3xl font-bold text-center">사양 비교 대시보드</h2>
+                <p class="mb-8 text-center text-gray-600">비교하고 싶은 콘솔을 선택하여 아래 차트에서 판매량과 RAM 성능을 확인해보세요.</p>
+                
+                <div id="console-selector" class="flex flex-wrap justify-center gap-2 mb-10">
+                    <!-- Checkboxes will be injected here -->
+                </div>
+
+                <div class="grid grid-cols-1 gap-8 lg:grid-cols-2">
+                    <div>
+                        <h3 class="mb-4 text-xl font-bold text-center">총 판매량 비교 (백만 대)</h3>
+                        <div class="p-4 rounded-lg chart-container bg-gray-50">
+                            <canvas id="salesChart"></canvas>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="mb-4 text-xl font-bold text-center">시스템 RAM 비교 (MB)</h3>
+                        <div class="p-4 rounded-lg chart-container bg-gray-50">
+                            <canvas id="ramChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="p-4 mt-16 text-center text-white bg-gray-800">
+        <p>&copy; 2025 대화형 닌텐도 콘솔 역사. 정보 탐색을 위해 제작되었습니다.</p>
+    </footer>
+
+    <script>
+        const consoleData = [
+            {
+                id: 'nes',
+                era: '1980',
+                name: 'NES / Famicom',
+                year: 1983,
+                sales: 61.91,
+                ram: 0.002,
+                cpu: 'Ricoh 2A03 (8-bit) @ 1.79 MHz',
+                storage: 'ROM 카트리지',
+                features: '게임 산업을 부활시킨 8비트 콘솔. D-패드를 대중화시켰습니다.',
+                icon: '🕹️'
+            },
+            {
+                id: 'gameboy',
+                era: '1980',
+                name: 'Game Boy',
+                year: 1989,
+                sales: 118.69,
+                ram: 0.008,
+                cpu: 'Sharp SM83 (8-bit) @ 4.19 MHz',
+                storage: 'ROM 카트리지',
+                features: '휴대용 게임 시장의 표준을 정립했습니다. 긴 배터리 수명과 내구성이 특징입니다.',
+                icon: '📱'
+            },
+            {
+                id: 'snes',
+                era: '1990',
+                name: 'SNES',
+                year: 1990,
+                sales: 49.10,
+                ram: 0.128,
+                cpu: 'Ricoh 5A22 (16-bit) @ 3.58 MHz',
+                storage: 'ROM 카트리지',
+                features: '16비트 시대의 강자. 모드 7 그래픽과 Super FX 같은 향상 칩을 사용했습니다.',
+                icon: '🚀'
+            },
+            {
+                id: 'n64',
+                era: '1990',
+                name: 'Nintendo 64',
+                year: 1996,
+                sales: 32.93,
+                ram: 4,
+                cpu: 'NEC VR4300 (64-bit) @ 93.75 MHz',
+                storage: 'ROM 카트리지',
+                features: '본격적인 3D 그래픽 시대를 열었습니다. 아날로그 스틱을 도입했습니다.',
+                icon: '🧊'
+            },
+            {
+                id: 'gamecube',
+                era: '2000',
+                name: 'GameCube',
+                year: 2001,
+                sales: 21.74,
+                ram: 24,
+                cpu: 'IBM Gekko (PowerPC) @ 486 MHz',
+                storage: '미니 DVD',
+                features: '독특한 큐브 디자인과 휴대용 손잡이가 특징입니다. 강력한 성능을 자랑했습니다.',
+                icon: '📦'
+            },
+            {
+                id: 'ds',
+                era: '2000',
+                name: 'Nintendo DS',
+                year: 2004,
+                sales: 154.02,
+                ram: 4,
+                cpu: 'ARM946E-S @ 67 MHz',
+                storage: '게임 카드',
+                features: '듀얼 스크린과 터치스크린으로 게임 방식에 혁명을 일으켰습니다.',
+                icon: '📖'
+            },
+            {
+                id: 'wii',
+                era: '2000',
+                name: 'Wii',
+                year: 2006,
+                sales: 101.63,
+                ram: 88,
+                cpu: 'IBM Broadway @ 729 MHz',
+                storage: '내장 플래시, SD 카드',
+                features: '모션 컨트롤을 대중화하여 가족 단위의 새로운 게이머들을 끌어들였습니다.',
+                icon: '👋'
+            },
+            {
+                id: '3ds',
+                era: '2010',
+                name: 'Nintendo 3DS',
+                year: 2011,
+                sales: 75.94,
+                ram: 128,
+                cpu: 'ARM11 MPCore @ 268 MHz',
+                storage: '게임 카드, SD 카드',
+                features: '안경 없이 즐기는 3D 입체 영상이 가장 큰 특징입니다.',
+                icon: '🕶️'
+            },
+            {
+                id: 'wiiu',
+                era: '2010',
+                name: 'Wii U',
+                year: 2012,
+                sales: 13.56,
+                ram: 2048,
+                cpu: 'IBM Espresso @ 1.24 GHz',
+                storage: '내장 플래시, USB',
+                features: '태블릿 형태의 게임패드를 이용한 비대칭 플레이를 시도했습니다.',
+                icon: '🎮'
+            },
+            {
+                id: 'switch',
+                era: '2010',
+                name: 'Nintendo Switch',
+                year: 2017,
+                sales: 152.13,
+                ram: 4096,
+                cpu: 'NVIDIA Tegra X1',
+                storage: '내장 플래시, microSD',
+                features: '가정용 콘솔과 휴대용 게임기를 하나로 합친 하이브리드 콘솔입니다.',
+                icon: '↔️'
+            }
+        ];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const detailsContainer = document.getElementById('console-details');
+            const selectorContainer = document.getElementById('console-selector');
+            
+            const eras = {
+                '1980': { title: '1980년대: 디지털 플레이의 여명', consoles: [] },
+                '1990': { title: '1990년대: 새로운 차원의 부상', consoles: [] },
+                '2000': { title: '2000년대: 상호작용의 재정의', consoles: [] },
+                '2010': { title: '2010년대-현재: 하이브리드의 시대', consoles: [] }
+            };
+
+            consoleData.forEach(c => {
+                eras[c.era].consoles.push(c);
+
+                const checkboxHtml = `
+                    <div>
+                        <input type="checkbox" id="check-${c.id}" value="${c.id}" class="hidden peer" onchange="updateCharts()">
+                        <label for="check-${c.id}" class="px-4 py-2 text-sm font-semibold border border-gray-300 rounded-full cursor-pointer select-none checkbox-label">${c.name}</label>
+                    </div>
+                `;
+                selectorContainer.innerHTML += checkboxHtml;
+            });
+
+            let detailsHtml = '';
+            for (const eraKey in eras) {
+                detailsHtml += `
+                    <section id="era-${eraKey}" class="my-16 scroll-mt-20">
+                        <h3 class="pl-4 mb-8 text-3xl font-bold border-l-4 border-red-500">${eras[eraKey].title}</h3>
+                        <div class="grid grid-cols-1 gap-8 md:grid-cols-2">
+                `;
+                eras[eraKey].consoles.forEach(c => {
+                    detailsHtml += `
+                        <div class="overflow-hidden transition-shadow bg-white shadow-lg rounded-xl hover:shadow-xl">
+                            <div class="p-6">
+                                <div class="flex items-center mb-4">
+                                    <span class="mr-4 text-4xl">${c.icon}</span>
+                                    <div>
+                                        <h4 class="text-2xl font-bold">${c.name}</h4>
+                                        <p class="text-sm text-gray-500">${c.year}년 출시</p>
+                                    </div>
+                                </div>
+                                <p class="mb-4 text-gray-700">${c.features}</p>
+                                <div class="p-4 text-sm rounded-lg bg-gray-50">
+                                    <p><strong>CPU:</strong> ${c.cpu}</p>
+                                    <p><strong>RAM:</strong> ${c.ram} MB</p>
+                                    <p><strong>저장매체:</strong> ${c.storage}</p>
+                                    <p><strong>총 판매량:</strong> ${c.sales} 백만 대</p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+                detailsHtml += `</div></section>`;
+            }
+            detailsContainer.innerHTML = detailsHtml;
+
+            initializeCharts();
+            setupNavLinks();
+        });
+
+        let salesChart, ramChart;
+
+        function initializeCharts() {
+            const salesCtx = document.getElementById('salesChart').getContext('2d');
+            salesChart = new Chart(salesCtx, {
+                type: 'bar',
+                data: { labels: [], datasets: [{ label: '판매량 (백만 대)', data: [], backgroundColor: '#E53E3E80', borderColor: '#C53030', borderWidth: 1 }] },
+                options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } } }
+            });
+
+            const ramCtx = document.getElementById('ramChart').getContext('2d');
+            ramChart = new Chart(ramCtx, {
+                type: 'bar',
+                data: { labels: [], datasets: [{ label: 'RAM (MB)', data: [], backgroundColor: '#4A556880', borderColor: '#2D3748', borderWidth: 1 }] },
+                options: { responsive: true, maintainAspectRatio: false, scales: { y: { type: 'logarithmic', beginAtZero: true } } }
+            });
+        }
+
+        function updateCharts() {
+            const selectedIds = Array.from(document.querySelectorAll('#console-selector input:checked')).map(el => el.value);
+            const selectedConsoles = consoleData.filter(c => selectedIds.includes(c.id)).sort((a,b) => a.year - b.year);
+
+            salesChart.data.labels = selectedConsoles.map(c => c.name);
+            salesChart.data.datasets[0].data = selectedConsoles.map(c => c.sales);
+            salesChart.update();
+
+            ramChart.data.labels = selectedConsoles.map(c => c.name);
+            ramChart.data.datasets[0].data = selectedConsoles.map(c => c.ram);
+            ramChart.update();
+        }
+
+        function setupNavLinks() {
+            const links = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('main section[id]');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const id = entry.target.getAttribute('id');
+                        links.forEach(link => {
+                            link.classList.toggle('active-link', link.getAttribute('href') === `#${id}`);
+                        });
+                    }
+                });
+            }, { rootMargin: "-50% 0px -50% 0px" });
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+
+            links.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetId = link.getAttribute('href');
+                    document.querySelector(targetId).scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                });
+            });
+        }
+
+    </script>
+</body>
+</html>
