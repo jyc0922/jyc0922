@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 기반 개인 맞춤 여행 추천 서비스 🇰🇷</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap');
+        
+        :root {
+            --primary-color: #0046A0;
+            --secondary-color: #FFC107;
+            --text-color: #333;
+            --bg-color: #f4f7f6;
+            --card-bg-color: #fff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+        }
+
+        .header {
+            background-color: var(--primary-color);
+            color: #fff;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+        }
+        
+        .nav-links button {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-left: 1rem;
+            font-family: inherit;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 2rem;
+        }
+
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1549429532-6a8f1181f08a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80') no-repeat center center/cover;
+            color: #fff;
+            text-align: center;
+            padding: 5rem 1rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+        }
+
+        .hero h2 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+        }
+
+        .filter-section {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        .filter-section button {
+            background-color: #e0e0e0;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .filter-section button:hover {
+            background-color: #d0d0d0;
+            transform: translateY(-2px);
+        }
+
+        .filter-section button.active {
+            background-color: var(--primary-color);
+            color: #fff;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--secondary-color);
+            display: inline-block;
+            padding-bottom: 0.5rem;
+            width: 100%;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background-color: var(--card-bg-color);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .card-content {
+            padding: 1.5rem;
+        }
+
+        .card-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>AI 기반 여행 추천 🗺️</h1>
+        </header>
+    
+    <div id="main-page" class="container">
+        <div class="hero">
+            <h2>나만을 위한 특별한 여행지</h2>
+            <p>당신의 여행 스타일을 분석하여 최고의 장소를 추천해 드립니다.</p>
+        </div>
+
+        <div class="filter-section">
+            <button class="filter-btn active" data-filter="all">전체</button>
+            <button class="filter-btn" data-filter="family">자녀 동반</button>
+            <button class="filter-btn" data-filter="couple">부부/커플</button>
+            <button class="filter-btn" data-filter="solo">나홀로 여행</button>
+        </div>
+        
+        <section class="section-tour">
+            <h2 class="section-title">✨ 개인 맞춤 여행지 목록</h2>
+            <div class="card-grid" id="recommendations">
+                </div>
+        </section>
+    </div>
+
+    <script>
+        const recommendationsDiv = document.getElementById('recommendations');
+        
+        // 카드 UI를 생성하는 함수
+        function createCard(place) {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = `
+                <img src="${place.img}" alt="${place.name}">
+                <div class="card-content">
+                    <h3>${place.name}</h3>
+                </div>
+            `;
+            // card.addEventListener('click', () => showDetailModal(place));
+            return card;
+        }
+
+        // 백엔드 API를 호출하여 AI 추천 목록을 가져오는 함수
+        async function fetchRecommendations(filter = 'all') {
+            recommendationsDiv.innerHTML = '<p style="text-align:center;">AI가 추천 목록을 생성 중입니다...</p>';
+
+            try {
+                // 우리 'app.py' 미니 서버에 추천을 요청합니다.
+                const apiUrl = `http://127.0.0.1:5000/recommend?persona=${filter}`;
+                const response = await fetch(apiUrl);
+
+                if (!response.ok) {
+                    throw new Error(`서버 응답 오류: ${response.status}`);
+                }
+                
+                const recommendedPlaces = await response.json();
+
+                recommendationsDiv.innerHTML = '';
+                
+                if (recommendedPlaces.length > 0) {
+                    recommendedPlaces.forEach(place => {
+                        recommendationsDiv.appendChild(createCard(place));
+                    });
+                } else {
+                    recommendationsDiv.innerHTML = '<p style="text-align:center;">선택하신 조건에 맞는 여행지가 없습니다.</p>';
+                }
+
+            } catch (error) {
+                console.error('추천 데이터를 불러오는 데 실패했습니다:', error);
+                recommendationsDiv.innerHTML = '<p style="text-align:center; color:red;">서버 연결에 실패했습니다. app.py가 실행 중인지 확인해주세요.</p>';
+            }
+        }
+
+        // 초기화 및 이벤트 리스너
+        document.addEventListener('DOMContentLoaded', () => {
+            // 페이지가 로드되면 바로 전체 추천을 요청합니다.
+            fetchRecommendations('all');
+            
+            // 필터 버튼에 이벤트 리스너를 추가합니다.
+            document.querySelectorAll('.filter-btn').forEach(button => {
+                button.addEventListener('click', () => {
+                    // 활성화된 버튼 스타일 변경
+                    document.querySelector('.filter-btn.active').classList.remove('active');
+                    button.classList.add('active');
+                    
+                    // 선택된 필터 값으로 다시 추천을 요청합니다.
+                    fetchRecommendations(button.dataset.filter);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

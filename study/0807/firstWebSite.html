@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 기반 개인 맞춤 여행 추천 서비스 🇰🇷</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap');
+        
+        :root {
+            --primary-color: #0046A0;
+            --secondary-color: #FFC107;
+            --text-color: #333;
+            --bg-color: #f4f7f6;
+            --card-bg-color: #fff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+        }
+
+        .header {
+            background-color: var(--primary-color);
+            color: #fff;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+        }
+        
+        .nav-links button {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-left: 1rem;
+            font-family: inherit;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 2rem;
+        }
+
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1549429532-6a8f1181f08a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80') no-repeat center center/cover;
+            color: #fff;
+            text-align: center;
+            padding: 5rem 1rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+        }
+
+        .hero h2 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+        }
+
+        .filter-section {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        .filter-section button {
+            background-color: #e0e0e0;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .filter-section button:hover {
+            background-color: #d0d0d0;
+            transform: translateY(-2px);
+        }
+
+        .filter-section button.active {
+            background-color: var(--primary-color);
+            color: #fff;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--secondary-color);
+            display: inline-block;
+            padding-bottom: 0.5rem;
+            width: 100%;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background-color: var(--card-bg-color);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .card-content {
+            padding: 1.5rem;
+        }
+
+        .card-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        .card-content p {
+            font-size: 1rem;
+            color: #666;
+        }
+        
+        /* 마이페이지 스타일 */
+        #mypage {
+            display: none; /* 초기에는 숨김 */
+        }
+        
+        .mypage-profile {
+            background-color: var(--card-bg-color);
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .mypage-profile h2 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+        
+        .mypage-profile p {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        /* 모달 스타일 */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1001;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+            padding-top: 60px;
+        }
+        
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 2rem;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 600px;
+            border-radius: 10px;
+            position: relative;
+        }
+        
+        .close-btn {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        
+        .close-btn:hover, .close-btn:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .modal-content img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+        
+        .modal-content h3 {
+            font-size: 2rem;
+            color: var(--primary-color);
+        }
+        
+        .modal-content p {
+            margin-bottom: 1rem;
+        }
+
+        .bookmark-btn {
+            background-color: var(--secondary-color);
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-family: inherit;
+        }
+
+        .footer {
+            background-color: var(--primary-color);
+            color: #fff;
+            text-align: center;
+            padding: 1.5rem 0;
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .header h1 {
+                margin-bottom: 1rem;
+            }
+            .nav-links {
+                width: 100%;
+                text-align: center;
+            }
+            .nav-links button {
+                margin: 0 0.5rem;
+            }
+            .hero h2 {
+                font-size: 2rem;
+            }
+            .container {
+                padding: 1rem;
+            }
+            .section-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <h1>AI 기반 여행 추천 🗺️</h1>
+        <nav class="nav-links">
+            <button id="main-btn">메인</button>
+            <button id="mypage-btn">마이페이지</button>
+            <button id="auth-btn">로그인</button>
+        </nav>
+    </header>
+    
+    <div id="main-page" class="container">
+        <div class="hero">
+            <h2>나만을 위한 특별한 여행지</h2>
+            <p>당신의 여행 스타일을 분석하여 최고의 장소를 추천해 드립니다.</p>
+        </div>
+
+        <div class="filter-section">
+            <button class="filter-btn active" data-filter="all">전체</button>
+            <button class="filter-btn" data-filter="family">자녀 동반</button>
+            <button class="filter-btn" data-filter="couple">부부/커플</button>
+            <button class="filter-btn" data-filter="solo">나홀로 여행</button>
+        </div>
+        
+        <section class="section-tour">
+            <h2 class="section-title">✨ 개인 맞춤 여행지 목록</h2>
+            <div class="card-grid" id="recommendations">
+                </div>
+        </section>
+    </div>
+    
+    <div id="mypage" class="container">
+        <section class="mypage-profile">
+            <h2>나의 여행 스타일</h2>
+            <p><strong>성별:</strong> <span id="user-gender"></span></p>
+            <p><strong>연령대:</strong> <span id="user-age"></span></p>
+            <p><strong>선호 스타일 1:</strong> <span id="style-1"></span></p>
+            <p><strong>선호 스타일 2:</strong> <span id="style-2"></span></p>
+        </section>
+        
+        <hr style="border: 0; height: 1px; background: #ddd; margin: 3rem 0;">
+
+        <section class="mypage-bookmarks">
+            <h2 class="section-title">❤️ 저장한 장소 목록</h2>
+            <div class="card-grid" id="bookmarks-list">
+                </div>
+        </section>
+    </div>
+    
+    <footer class="footer">
+        <p>&copy; 2025 AI 기반 여행 추천. All Rights Reserved.</p>
+    </footer>
+
+    <div id="detail-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <img id="modal-image" src="" alt="장소 이미지">
+            <h3 id="modal-title"></h3>
+            <p><strong>주소:</strong> <span id="modal-address"></span></p>
+            <p><strong>평균 만족도:</strong> <span id="modal-satisfaction"></span></p>
+            <p><strong>재방문 의향:</strong> <span id="modal-revisit"></span></p>
+            <button class="bookmark-btn">찜하기</button>
+        </div>
+    </div>
+    
+    <div id="auth-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h3 id="auth-title">로그인</h3>
+            <form id="auth-form">
+                <input type="text" placeholder="아이디" style="width:100%; padding:10px; margin: 10px 0; border:1px solid #ccc; border-radius:5px;">
+                <input type="password" placeholder="비밀번호" style="width:100%; padding:10px; margin: 10px 0; border:1px solid #ccc; border-radius:5px;">
+                <button type="submit" style="width:100%; padding:10px; background-color:var(--primary-color); color:#fff; border:none; border-radius:5px; cursor:pointer;">로그인</button>
+            </form>
+            <p style="text-align:center; margin-top:1rem;">계정이 없으신가요? <a href="#" id="signup-link">회원가입</a></p>
+        </div>
+    </div>
+
+    <script>
+        // 시뮬레이션을 위한 가상 데이터
+        const userData = {
+            id: 'user123',
+            gender: '여성',
+            age: '20대',
+            style1: '자연 감상',
+            style2: '액티비티',
+            style3: '편의시설',
+            isLoggedIn: false
+        };
+
+        const codebook = {
+            'A1': '자연 감상', 'A2': '액티비티', 'A3': '편의시설', 'A4': '역사 탐방', 'A5': '예술/문화'
+        };
+
+        const allPlaces = [
+            { id: 1, name: '경주 불국사', address: '경주시 불국로 385', satisfaction: 4.5, revisit: 4.2, persona: 'family', img: 'https://images.unsplash.com/photo-1579739527633-5c742964e525?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80' },
+            { id: 2, name: '부산 해운대', address: '부산시 해운대구 우동', satisfaction: 4.8, revisit: 4.9, persona: 'couple', img: 'https://images.unsplash.com/photo-1589146907572-c214c718a514?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80' },
+            { id: 3, name: '제주도 한라산', address: '제주시 해안동', satisfaction: 4.7, revisit: 4.0, persona: 'solo', img: 'https://images.unsplash.com/photo-1588630018868-b778403362a2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80' },
+            { id: 4, name: '전주 한옥마을', address: '전주시 완산구 기린대로', satisfaction: 4.6, revisit: 4.5, persona: 'family', img: 'https://images.unsplash.com/photo-1620610330107-16781295b9d3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80' },
+            { id: 5, name: '서울 남산타워', address: '서울시 용산구 남산공원길', satisfaction: 4.3, revisit: 4.1, persona: 'couple', img: 'https://images.unsplash.com/photo-1594957457788-b4b9b6e8a0b0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80' },
+            { id: 6, name: '강릉 오죽헌', address: '강릉시 율곡로3139번길', satisfaction: 4.4, revisit: 3.8, persona: 'solo', img: 'https://images.unsplash.com/photo-1627685942468-12e7561f0e4b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80' }
+        ];
+
+        let bookmarkedPlaces = [];
+
+        const mainPage = document.getElementById('main-page');
+        const mypage = document.getElementById('mypage');
+        const mainBtn = document.getElementById('main-btn');
+        const mypageBtn = document.getElementById('mypage-btn');
+        const authBtn = document.getElementById('auth-btn');
+        const authModal = document.getElementById('auth-modal');
+        const detailModal = document.getElementById('detail-modal');
+        const closeBtns = document.querySelectorAll('.close-btn');
+        const authForm = document.getElementById('auth-form');
+        const signupLink = document.getElementById('signup-link');
+
+        // 페이지 전환 함수
+        function showPage(pageId) {
+            mainPage.style.display = 'none';
+            mypage.style.display = 'none';
+            if (pageId === 'main') {
+                mainPage.style.display = 'block';
+            } else if (pageId === 'mypage' && userData.isLoggedIn) {
+                mypage.style.display = 'block';
+                renderMypage();
+            } else if (pageId === 'mypage' && !userData.isLoggedIn) {
+                alert('로그인이 필요합니다.');
+                showAuthModal('login');
+            }
+        }
+        
+        // 카드 렌더링 함수
+        function createCard(place) {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = `
+                <img src="${place.img}" alt="${place.name}">
+                <div class="card-content">
+                    <h3>${place.name}</h3>
+                </div>
+            `;
+            card.addEventListener('click', () => showDetailModal(place));
+            return card;
+        }
+
+        // 추천 목록 렌더링
+        function renderRecommendations(filter = 'all') {
+            const recommendationsDiv = document.getElementById('recommendations');
+            recommendationsDiv.innerHTML = '';
+            
+            let filteredPlaces = allPlaces;
+            if (filter !== 'all') {
+                filteredPlaces = allPlaces.filter(place => place.persona === filter);
+            }
+
+            // AI 추천을 가정하고, 필터링된 장소들을 보여줍니다.
+            if (filteredPlaces.length > 0) {
+                filteredPlaces.forEach(place => {
+                    recommendationsDiv.appendChild(createCard(place));
+                });
+            } else {
+                recommendationsDiv.innerHTML = '<p style="text-align:center;">선택하신 조건에 맞는 여행지가 없습니다.</p>';
+            }
+        }
+
+        // 마이페이지 렌더링
+        function renderMypage() {
+            document.getElementById('user-gender').textContent = userData.gender;
+            document.getElementById('user-age').textContent = userData.age;
+            document.getElementById('style-1').textContent = userData.style1;
+            document.getElementById('style-2').textContent = userData.style2;
+
+            const bookmarksList = document.getElementById('bookmarks-list');
+            bookmarksList.innerHTML = '';
+            if (bookmarkedPlaces.length > 0) {
+                bookmarkedPlaces.forEach(place => {
+                    bookmarksList.appendChild(createCard(place));
+                });
+            } else {
+                bookmarksList.innerHTML = '<p style="text-align:center;">아직 찜한 장소가 없습니다.</p>';
+            }
+        }
+        
+        // 상세 정보 모달 표시
+        function showDetailModal(place) {
+            document.getElementById('modal-image').src = place.img;
+            document.getElementById('modal-title').textContent = place.name;
+            document.getElementById('modal-address').textContent = place.address;
+            document.getElementById('modal-satisfaction').textContent = `${place.satisfaction}점`;
+            document.getElementById('modal-revisit').textContent = `${place.revisit}점`;
+            
+            // 찜하기 버튼에 이벤트 추가
+            const bookmarkBtn = detailModal.querySelector('.bookmark-btn');
+            bookmarkBtn.onclick = () => {
+                if (userData.isLoggedIn) {
+                    bookmarkPlace(place);
+                } else {
+                    alert('로그인이 필요합니다.');
+                    showAuthModal('login');
+                }
+            };
+            
+            detailModal.style.display = 'block';
+        }
+
+        // 찜하기 기능
+        function bookmarkPlace(place) {
+            const exists = bookmarkedPlaces.some(p => p.id === place.id);
+            if (!exists) {
+                bookmarkedPlaces.push(place);
+                alert(`${place.name}을(를) 찜 목록에 추가했습니다!`);
+                detailModal.style.display = 'none';
+            } else {
+                alert('이미 찜한 장소입니다.');
+            }
+        }
+
+        // 인증 모달 표시
+        function showAuthModal(type) {
+            const title = document.getElementById('auth-title');
+            const form = document.getElementById('auth-form');
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const signupLinkText = document.getElementById('signup-link');
+
+            if (type === 'login') {
+                title.textContent = '로그인';
+                submitBtn.textContent = '로그인';
+                signupLinkText.textContent = '회원가입';
+            } else { // type === 'signup'
+                title.textContent = '회원가입';
+                submitBtn.textContent = '회원가입';
+                signupLinkText.textContent = '로그인';
+            }
+            authModal.style.display = 'block';
+        }
+
+        // 모달 닫기
+        closeBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                authModal.style.display = 'none';
+                detailModal.style.display = 'none';
+            });
+        });
+
+        // 초기화 및 이벤트 리스너
+        document.addEventListener('DOMContentLoaded', () => {
+            renderRecommendations();
+            
+            // 네비게이션 버튼 이벤트
+            mainBtn.addEventListener('click', () => showPage('main'));
+            mypageBtn.addEventListener('click', () => showPage('mypage'));
+
+            // 인증 버튼 이벤트
+            authBtn.addEventListener('click', () => {
+                if (userData.isLoggedIn) {
+                    // 로그아웃 처리
+                    userData.isLoggedIn = false;
+                    authBtn.textContent = '로그인';
+                    alert('로그아웃되었습니다.');
+                    showPage('main');
+                } else {
+                    showAuthModal('login');
+                }
+            });
+
+            // 인증 폼 제출 이벤트 (시뮬레이션)
+            authForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                userData.isLoggedIn = true;
+                authBtn.textContent = '로그아웃';
+                authModal.style.display = 'none';
+                alert('로그인되었습니다!');
+                showPage('main');
+            });
+
+            // 회원가입/로그인 전환 링크
+            signupLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                const authTitle = document.getElementById('auth-title');
+                showAuthModal(authTitle.textContent === '로그인' ? 'signup' : 'login');
+            });
+
+            // 필터 버튼 이벤트
+            document.querySelectorAll('.filter-btn').forEach(button => {
+                button.addEventListener('click', () => {
+                    document.querySelector('.filter-btn.active').classList.remove('active');
+                    button.classList.add('active');
+                    renderRecommendations(button.dataset.filter);
+                });
+            });
+        });
+
+    </script>
+</body>
+</html>
