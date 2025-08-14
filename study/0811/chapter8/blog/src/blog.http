@@ -1,0 +1,30 @@
+@server = http://localhost:3000
+
+#게시글 조회    
+GET{{server}}/blog
+
+### 게시글 생성
+POST {{server}}/blog
+Content-Type: application/json
+
+{
+    "title": "New Blog Post 안녕하세요",
+    "content": "This is the content of the new blog post. 처음 인사드립니다",
+    "name": "Author Name 이름"
+}
+
+### 특정 게시글 조회
+GET {{server}}/blog/<게시글 ID>
+
+### 게시글 삭제
+DELETE {{server}}/blog/<게시글 ID>
+
+### 게시글 수정
+PUT {{server}}/blog/<게시글 ID>
+Content-Type: application/json
+
+{
+    "title": "Updated Blog Post 타이틀 수정3",
+    "content": "This is the updated content of the blog post.본문 수정3",
+    "name": "alex A"
+}

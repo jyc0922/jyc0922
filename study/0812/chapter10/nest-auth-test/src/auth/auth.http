@@ -1,0 +1,51 @@
+### 회원가입
+POST http://localhost:3000/auth/register
+content-type: application/json
+
+{
+    "email": "anyany3@gangnam.com",
+    "password": "1232",
+    "username": "anyany2"
+}
+
+### 로그인
+POST http://localhost:3000/auth/login
+content-type: application/json
+
+{
+    "email": "anyany@gangnam.com",
+    "password": "123123"
+}
+
+### 로그인2 LoginGuard
+POST http://localhost:3000/auth/login2
+content-type: application/json
+
+{
+    "email": "anyany@gangnam.com",
+    "password": "123123"
+}
+
+### Guard 테스트
+GET http://localhost:3000/auth/test-guard
+
+### 로그인 3: 세션 테스트
+POST http://localhost:3000/auth/login3
+content-type: application/json
+
+{
+    "email": "anyany@gangnam.com",
+    "password": "123123"
+}
+
+### 로그인 3: 틀린 패스워드 테스트  
+POST http://localhost:3000/auth/login3
+content-type: application/json
+
+{
+    "email": "anyany@gangnam.com",
+    "password": "1231231"
+}
+
+### 인증이 성공 하는지 테스트
+GET http://localhost:3000/auth/test-guard2
