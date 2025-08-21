@@ -3,3 +3,4 @@
 **/package-lock.json
 **/my-first-repo/*
 .env
+**/.env

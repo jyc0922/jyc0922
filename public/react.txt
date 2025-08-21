@@ -1,0 +1,202 @@
+-react ec2 배포 방법
+1. 책에 있는 github 주소
+2. npm run build
+3. scp로 웹 서버에 전송
+4. nginx(정적 호스팅, proxy) 
+5. /var/www/myapp -> static 파일 옮김
+6. sg 80 port open
+
+# ## 웹 서버 배포
+출처: https://www.notion.so/2409c8fe565b80b69a0cd3d72cffbb47
+
+### ### 사전 준비
+
+1. **로컬 PC**: 배포할 프로젝트를 `npm run build` 명령어로 빌드하여 `build` 폴더를 생성합니다.
+2. **로컬 PC**: `scp` 명령어를 이용해 `build` 폴더를 EC2 웹 서버의 홈 디렉터리(`/home/ec2-user/`)로 업로드합니다.
+3. **EC2 서버**: SSH를 이용해 웹 서버에 접속합니다.
+
+---
+
+### ### 1단계: Nginx 설치 및 서비스 활성화
+
+웹 서버 역할을 할 Nginx를 설치하고, 서버가 켜질 때마다 자동으로 시작되도록 설정합니다. (ec2)
+
+Bash
+
+`# Nginx 설치
+sudo dnf install nginx -y
+
+# Nginx 서비스 시작
+sudo systemctl start nginx
+
+# Nginx 서비스 자동 시작 활성화
+sudo systemctl enable nginx`
+
+---
+
+### ### 2단계: 웹 콘텐츠 디렉터리 준비
+
+웹사이트 파일을 보관할 표준 디렉터리를 생성하고, 업로드한 `build` 폴더의 내용물을 이곳으로 옮깁니다.(빌드폴더 중복주의, myapp은 페이지마다 다른 폴더명으로)
+
+Bash
+
+`# 디렉터리 생성
+sudo mkdir -p /var/www/myapp
+
+# 디렉터리 소유권 변경
+sudo chown -R ec2-user:ec2-user /var/www/myapp
+
+# build 폴더 내용물 이동
+mv /home/ec2-user/build/* /var/www/myapp/`
+
+---
+
+### ### 3단계: 파일 및 폴더 권한 설정
+
+Nginx가 웹사이트 파일들을 정상적으로 읽을 수 있도록 표준 웹 권한(폴더: 755, 파일: 644)을 설정합니다.
+
+Bash
+
+`# 폴더 권한을 755로 설정
+sudo find /var/www/myapp -type d -exec chmod 755 {} \;
+
+# 파일 권한을 644로 설정
+sudo find /var/www/myapp -type f -exec chmod 644 {} \;`
+
+---
+
+### ### 4단계: Nginx 설정 파일 생성 (고급 버전)
+
+Nginx에게 이 웹사이트를 어떻게 서비스할지 알려주는 설정 파일을 작성합니다.
+
+1. `nano` 편집기로 새로운 설정 파일을 엽니다.Bash
+    
+    `sudo nano /etc/nginx/conf.d/myapp.conf`
+    
+2. 열린 편집기 안에 아래의 **고급 설정** 내용을 전부 복사하여 
+3. 붙여넣습니다 .(포트번호 확인, ip주소 바꿔주세요 )
+    
+    `server {
+        listen 80;
+        server_name 43.201.75.18; # 웹 서버의 Public IP 또는 도메인 주소
+    
+        # 웹 사이트 파일이 저장된 경로
+        root /var/www/myapp;
+        index index.html;
+    
+        # JS, CSS 등 정적 파일에 대한 캐싱 설정 (1년간 캐시)
+        location ~* \.(?:js|css|ico|png|jpg|jpeg|gif|svg|webp|avif|woff2?)$ {
+            expires 1y;
+            add_header Cache-Control "public, max-age=31536000, immutable";
+            try_files $uri =404;
+        }
+    
+        # index.html 파일은 캐시하지 않도록 설정
+        location = /index.html {
+            add_header Cache-Control "no-cache";
+        }
+    
+        # React 같은 Single Page Application(SPA)을 위한 라우팅 설정
+        location / {
+            try_files $uri $uri/ /index.html;
+        }
+    }`
+    
+4. `Ctrl+X` → `Y` → `Enter` 키를 순서대로 눌러 저장하고 편집기를 종료합니다.
+
+---
+
+### ### 5단계: Nginx 재시작으로 설정 적용
+
+작성한 설정 파일에 오류가 없는지 확인하고, Nginx를 재시작하여 최종 적용합니다.
+
+Bash
+
+`# 설정 파일 문법 테스트
+sudo nginx -t
+
+# Nginx 재시작
+sudo systemctl restart nginx`
+
+---
+
+### ### 6단계: AWS 보안 그룹 확인
+
+AWS EC2 콘솔에서 웹 서버의 보안 그룹 인바운드 규칙에 **HTTP (80번 포트)**가 모든 IP(`0.0.0.0/0`)에 대해 허용되어 있는지 확인합니다.
+
+### ### 7단계: 최종 확인
+
+PC의 웹 브라우저를 열고 포트 번호 없이 Public IP 주소로 접속합니다.
+
+---
+
+---
+
+# 페이지 여러개 사용할때 주의점——
+
+---
+
+## ## 1. Nginx 포트(`listen`)와 서버 이름(`server_name`) 충돌
+
+하나의 IP 주소와 포트 번호 조합은 오직 하나의 `server` 블록만 차지할 수 있습니다.
+
+- **문제 상황**: 두 개의 Nginx 설정 파일(`myapp.conf`, `anotherapp.conf`)이 모두 `listen 80;`으로 동일하게 설정되어 있고, `server_name`이 없거나 같다면 Nginx는 어떤 사이트를 보여줘야 할지 몰라 오류를 일으키거나 의도치 않은 사이트를 보여줍니다.
+- **해결 방법 A: 포트 번호를 다르게 하기 (테스트용)**
+이전에 설명해 드린 것처럼, 각 사이트마다 다른 포트 번호를 할당하는 가장 간단한 방법입니다.
+    - `myapp.conf` → `listen 80;`
+    - `anotherapp.conf` → `listen 8080;`
+- **해결 방법 B: 서버 이름을 다르게 하기 (실제 운영 방식)**
+만약 `aaa.com`과 `bbb.com`이라는 두 개의 도메인이 있다면, 두 설정 모두 `listen 80;`을 사용하되 `server_name`을 각자의 도메인으로 지정합니다. Nginx는 요청이 들어온 도메인 이름을 보고 어떤 설정을 적용할지 스스로 판단합니다. 이것이 **'가상 호스팅'**의 핵심 원리입니다.Nginx
+    
+    `# myapp.conf
+    server {
+        listen 80;
+        server_name aaa.com;
+        root /var/www/myapp;
+        ...
+    }
+    
+    # anotherapp.conf
+    server {
+        listen 80;
+        server_name bbb.com;
+        root /var/www/anotherapp;
+        ...
+    }`
+    
+
+---
+
+## ## 2. 웹 콘텐츠 폴더(`root`) 경로 중복
+
+예상하신 대로, 각 사이트는 완전히 독립된 자신만의 폴더를 가져야 합니다.
+
+- **주의할 점**: `myapp.conf`와 `anotherapp.conf` 파일의 `root` 지시어가 각각 다른 경로를 가리키는지 반드시 확인해야 합니다.
+    - `myapp.conf` → `root /var/www/myapp;`
+    - `anotherapp.conf` → `root /var/www/anotherapp;`
+
+---
+
+## ## 3. Nginx 설정 파일 이름 중복
+
+혼란을 방지하기 위해, 각 사이트의 설정 파일은 사이트의 특성을 나타내는 고유한 이름으로 만드는 것이 좋습니다.
+
+- **좋은 예**: `myapp.conf`, `myblog.conf`, `shoppingmall.conf`
+- **나쁜 예**: `nginx1.conf`, `test.conf`, `default.conf`
+
+---
+
+## ## 4. AWS 보안 그룹
+
+새로운 포트 번호(예: `8080`)를 사용해서 사이트를 추가했다면, AWS EC2 보안 그룹의 **인바운드 규칙**에 해당 포트를 열어주는 것을 잊지 말아야 합니다.
+
+---
+
+## ## 요약: 충돌 방지 체크리스트
+
+| 충돌 지점 (Conflict Point) | 해결 방법 (Solution) |
+| --- | --- |
+| **Nginx `listen` (포트)** | 다른 포트(8080) 사용 **또는** 다른 `server_name`(도메인) 사용 |
+| **Nginx `root` (파일 경로)** | 사이트마다 별도의 폴더 생성 (`/var/www/site_A`, `/var/www/site_B`) |
+| **Nginx 설정 파일** | 사이트마다 별도의 `.conf` 파일 생성 (`site_A.conf`, `site_B.conf`) |
+| **AWS 보안 그룹** | 새로 사용하는 포트가 있다면 인바운드 규칙에 추가 |
